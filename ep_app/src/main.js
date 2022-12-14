@@ -9,7 +9,7 @@ import "muse-ui/dist/muse-ui.css";
 import "typeface-roboto";
 // 使用Toast插件
 import Toast from "muse-ui-toast";
-// Toast.config({ position: "top" });
+Toast.config({ position: "bottom", time: "1500" });
 // 引入工具（动画等）
 import Helpers from "muse-ui/lib/Helpers";
 // 引入loading

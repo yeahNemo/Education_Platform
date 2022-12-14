@@ -24,6 +24,7 @@
     </div>
 </template>
 <script>
+import { setToken } from '@/utils/auth'
 export default {
     data() {
         return {
@@ -46,9 +47,12 @@ export default {
     methods: {
         submit() {
             this.$refs.form.validate().then(async (result) => {
-                const res = await this.$http.post('ums/login', this.model)
-                console.log(res);
-
+                if (result) {
+                    await this.$http.post('ums/login', this.model).then(res => {
+                        console.log(res);
+                        setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
+                    })
+                }
             });
         },
     }

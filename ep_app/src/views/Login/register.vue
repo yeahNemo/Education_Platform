@@ -6,8 +6,8 @@
                 <mu-form-item prop="email" :rules="emailRules">
                     <mu-text-field placeholder="邮箱" type="email" v-model="model.email" prop="email"></mu-text-field>
                 </mu-form-item>
-                <mu-form-item prop="vertifyCode" :rules="usernameRules">
-                    <mu-text-field placeholder="验证码" v-model="model.vertifyCode" prop="vertifyCode">
+                <mu-form-item prop="authCode" :rules="authCodeRules">
+                    <mu-text-field placeholder="验证码" v-model="model.authCode" prop="authCode">
                         <template #append>
                             <mu-button :disabled="disabled" flat small color="primary"
                                 @click="sendSmsCode">{{ sendBtnText }}</mu-button>
@@ -42,8 +42,12 @@
 export default {
     data() {
         return {
-            usernameRules: [
+            authCodeRules: [
                 { validate: (val) => !!val, message: '请填写验证码' },
+                { validate: (val) => val.length == 6, message: '验证码为6位！' }
+            ],
+            usernameRules: [
+                { validate: (val) => !!val, message: '请填写用户名' },
                 { validate: (val) => val.length >= 3, message: '用户名长度大于3' }
             ],
             passwordRules: [
@@ -63,7 +67,7 @@ export default {
                 password: '',
                 email: '',
                 confirmedPassword: '',
-                vertifyCode: ''
+                authCode: ''
             },
             // 倒计时
             timer: null,
@@ -74,8 +78,22 @@ export default {
         }
     },
     methods: {
-        sendSmsCode() {
-            console.log('sendSmsCode');
+        async sendSmsCode() {
+            // 顶部显示发送成功
+            // 发送的api
+            const res = await this.$http.get(`mail/send/${this.model.email}`).then(res => {
+                if (res.data.data.code == 200) {
+                    this.$toast.success('已发送');
+                }
+            }).catch(e => {
+                console.log(e);
+
+                this.$toast.error('失败');
+            })
+            if (res === undefined) {
+                return
+            }
+
             this.disabled = true
             this.counter = 59
             // TODO 倒计时再次发送
@@ -98,7 +116,17 @@ export default {
         },
         submit() {
             this.$refs.form.validate().then((result) => {
-                console.log('form valid: ', result)
+
+                if (result) {
+                    this.$http.post('ums/register', this.model).then(res => {
+                        console.log(res);
+                    }).catch(e => {
+                        console.log(e);
+                    })
+                } else {
+                    return
+                }
+
             });
         },
         clear() {
@@ -108,7 +136,7 @@ export default {
                 password: '',
                 email: '',
                 confirmedPassword: '',
-                vertifyCode: ''
+                authCode: ''
             };
         }
     }

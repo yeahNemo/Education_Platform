@@ -1,35 +1,35 @@
-import axios from 'axios'
-import Toast from 'muse-ui-toast'
+import axios from "axios";
+import { successMsg, errorMsg } from "@/utils/message";
 
 const service = axios.create({
-  baseURL: 'http://localhost:8081'
-})
+  baseURL: "http://localhost:8081",
+});
 
 service.interceptors.response.use(
   (response) => {
-    const code = response.data.code
-    const message = response.data.message
+    const code = response.data.code;
+    const message = response.data.message;
     if (code === 400) {
-      Toast.error(message)
-      return Promise.reject(response)
+      errorMsg(message);
+      return Promise.reject(response);
     }
-    return Promise.resolve(response)
+    return Promise.resolve(response);
   },
   (error) => {
     if (error.response.status) {
-      const message = error.response.data.message
+      const message = error.response.data.message;
       switch (error.response.status) {
         case 404:
-          alert('页面未找到')
-          break
+          alert("页面未找到");
+          break;
         case 400:
-          Toast.error(message)
-          break
+          errorMsg(message);
+          break;
       }
     }
-    return Promise.reject(error.response)
+    return Promise.reject(error.response);
   }
-)
+);
 
 // service.interceptors.response.use(
 //   (response) => {
@@ -105,4 +105,4 @@ service.interceptors.response.use(
 //   }
 // );
 
-export default service
+export default service;

@@ -1,30 +1,38 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/login",
-    name: "login",
-    component: () => import("../views/Login/index.vue"),
+    path: '/',
+    redirect: '/login'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/Login/index.vue'),
     children: [
       {
-        path: "/",
-        name: "login",
-        component: () => import("../views/Login/login.vue"),
+        path: '/',
+        name: 'login',
+        component: () => import('../views/Login/login.vue')
       },
       {
-        path: "/register",
-        name: "register",
-        component: () => import("../views/Login/register.vue"),
-      },
-    ],
+        path: '/register',
+        name: 'register',
+        component: () => import('../views/Login/register.vue')
+      }
+    ]
   },
-];
+  {
+    path: '/main',
+    component: () => import('@/views/Main')
+  }
+]
 
 const router = new VueRouter({
-  routes,
-});
+  routes
+})
 
-export default router;
+export default router
