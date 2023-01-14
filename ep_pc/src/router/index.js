@@ -25,13 +25,17 @@ const routes = [
         component: () => import("@/views/Asset/video.vue"),
       },
       {
-        path: "application",
-        name: "application",
+        path: "inst-type",
+        component: () => import("@/views/Inst/TypeManage.vue"),
+      },
+      {
+        path: "inst-apply",
+        name: "inst-apply",
         component: () => import("@/views/InstApplication"),
       },
       {
-        path: "inst-type",
-        component: () => import("@/views/Inst/TypeManage.vue"),
+        path: "stu-apply",
+        component: () => import("@/views/Inst/StudentApply.vue"),
       },
     ],
   },

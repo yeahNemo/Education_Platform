@@ -1,17 +1,14 @@
 <template>
-    <div>
+    <div style="height:100%">
         <div>
             <mu-appbar style="width: 100%;" title="交运通" color="primary" z-depth="0"></mu-appbar>
-        </div>
-        <div class="main">
-
         </div>
         <router-view></router-view>
         <div class="footer">
             <mu-bottom-nav>
-                <mu-bottom-nav-item title="Recents" icon="restore"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="Favorites" icon="favorite"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="Nearby" icon="location_on"></mu-bottom-nav-item>
+                <mu-bottom-nav-item title="首页" icon="home" to="/main/home"></mu-bottom-nav-item>
+                <mu-bottom-nav-item title="课程" icon="book"></mu-bottom-nav-item>
+                <mu-bottom-nav-item title="我的" icon="account_circle" to="/main/user"></mu-bottom-nav-item>
             </mu-bottom-nav>
         </div>
     </div>
@@ -19,17 +16,19 @@
 
 <script>
 export default {
+    data() {
+        return {
+            active: 0
+        }
+    },
 
 }
 </script>
 
 <style scoped>
-.main {
-    min-height: 100%;
-    margin-bottom: 3.5rem;
-}
-
 .footer {
-    margin-top: 50px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
 }
 </style>

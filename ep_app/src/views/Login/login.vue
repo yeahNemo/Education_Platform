@@ -51,6 +51,9 @@ export default {
                     await this.$http.post('ums/login', this.model).then(res => {
                         console.log(res);
                         setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
+                        // Vuex保存用户数据
+                        this.$store.commit('setUserInfo', res.data.data.userInfo)
+                        this.$router.push('/main/home')
                     })
                 }
             });

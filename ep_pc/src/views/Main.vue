@@ -7,32 +7,79 @@
                         <h1 style="color:azure">交运通后台管理系统</h1>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" style="margin-left: 35rem"
-                            @click="dialogFormVisible = true">激活</el-button>
+                        <el-button type="success" style="margin-left: 33rem" @click="dialogFormVisible = true"
+                            :disabled="userInfo.status === 1">{{ userInfo.status === 1 ? '已激活' : '激活' }}</el-button>
                     </el-col>
                 </el-row>
             </el-header>
             <el-container>
                 <el-aside width="15rem" style="background-color: rgb(238, 241, 246)">
                     <el-menu router unique-opene :default-active="$route.path">
-                        <el-submenu index="1">
+                        <el-submenu :index="'' + item.id" v-for="item in getFatherRightList()" :key="item.id">
+                            <template slot="title"><i class="el-icon-message"></i>{{ item.rightName }}</template>
+                            <el-menu-item index="/main/stu-apply" v-for="subItem in getChildrenRightList(item.id)"
+                                :key="subItem.id">{{ subItem.rightName }}</el-menu-item>
+                        </el-submenu>
+
+
+                        <!-- <el-submenu index="1">
                             <template slot="title"><i class="el-icon-message"></i>机构管理</template>
                             <el-menu-item-group>
-                                <template slot="title">机构管理</template>
+                                <template slot="title">admin机构管理</template>
                                 <el-menu-item index="/main/application">机构申请审核</el-menu-item>
                                 <el-menu-item index="/main/inst">机构账号管理</el-menu-item>
                                 <el-menu-item index="/main/inst-type">机构类别管理</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
-                        <el-submenu index="3">
+                        <el-submenu index="2">
                             <template slot="title"><i class="el-icon-message"></i>资源管理</template>
                             <el-menu-item-group>
-                                <template slot="title">学习资源</template>
+                                <template slot="title">admin学习资源</template>
                                 <el-menu-item index="/main/video">视频资源</el-menu-item>
                                 <el-menu-item index="/assest/doc">文档资源</el-menu-item>
                                 <el-menu-item index="/assest/exam">试题资源</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
+                        <el-submenu index="3">
+                            <template slot="title"><i class="el-icon-message"></i>我的机构</template>
+                            <el-menu-item-group>
+                                <template slot="title">instAdmin机构管理</template>
+                                <el-menu-item index="/main/application">人员配置</el-menu-item>
+                                <el-menu-item index="/main/inst-type">信息管理</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="4">
+                            <template slot="title"><i class="el-icon-message"></i>机构资源</template>
+                            <el-menu-item-group>
+                                <template slot="title">instAdmin学习资源</template>
+                                <el-menu-item index="/main/video">视频资源</el-menu-item>
+                                <el-menu-item index="/assest/doc">文档资源</el-menu-item>
+                                <el-menu-item index="/assest/exam">试题资源</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="5">
+                            <template slot="title"><i class="el-icon-message"></i>学员管理</template>
+                            <el-menu-item-group>
+                                <template slot="title">instAdmin学员管理</template>
+                                <el-menu-item index="/main/video">学员审核</el-menu-item>
+                                <el-menu-item index="/assest/doc">学员信息</el-menu-item>
+                                <el-menu-item index="/assest/exam">学习/考试情况</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="6">
+                            <template slot="title"><i class="el-icon-message"></i>培训计划</template>
+                            <el-menu-item-group>
+                                <template slot="title">instAdmin培训计划</template>
+                                <el-menu-item index="/main/video">培训计划管理</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu>
+                        <el-submenu index="7">
+                            <template slot="title"><i class="el-icon-message"></i>视频审核</template>
+                            <el-menu-item-group>
+                                <template slot="title">inst审核员</template>
+                                <el-menu-item index="/main/video">视频审核管理</el-menu-item>
+                            </el-menu-item-group>
+                        </el-submenu> -->
                     </el-menu>
                 </el-aside>
                 <el-main>
@@ -68,14 +115,18 @@
 
 <script>
 import { successMsg } from '@/utils/message'
+import { mapState } from 'vuex'
 export default {
     created() {
         this.$http.get('inst/type/get').then(res => {
             this.instTypeList = res.data.data
-        })
+        });
+        this.menuList = this.userRights
+        console.log(this.menuList);
     },
     data() {
         return {
+            menuList: [],
             rules: {
                 instName: [
                     { required: true, message: '请输入名称', trigger: 'blur' }
@@ -96,6 +147,12 @@ export default {
         }
     },
     methods: {
+        getFatherRightList() {
+            return this.menuList.filter(item => item.father_right === 0)
+        },
+        getChildrenRightList(fatherId) {
+            return this.menuList.filter(item => item.father_right === fatherId)
+        },
         submit() {
             this.$refs['applyForm'].validate(async (result) => {
                 if (result) {
@@ -113,6 +170,9 @@ export default {
             });
         },
     },
+    computed: {
+        ...mapState(['userInfo', 'userRights'])
+    }
 }
 </script>
 

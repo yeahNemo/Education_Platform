@@ -10,12 +10,10 @@ const routes = [
   },
   {
     path: '/login',
-    name: 'login',
     component: () => import('../views/Login/index.vue'),
     children: [
       {
         path: '/',
-        name: 'login',
         component: () => import('../views/Login/login.vue')
       },
       {
@@ -26,8 +24,36 @@ const routes = [
     ]
   },
   {
+    path: '/ins-home/:id',
+    component: () => import('../views/Ins/index.vue'),
+    props: true
+  },
+  {
+    path: '/ins-chat/:id',
+    component: () => import('../views/Ins/Chat'),
+    props: true
+  },
+  {
     path: '/main',
-    component: () => import('@/views/Main')
+    component: () => import('@/views/Main'),
+    children: [
+      {
+        path: '/',
+        redirect: 'home'
+      },
+      {
+        path: 'home',
+        component: () => import('@/views/Home')
+      },
+      {
+        path: 'user',
+        component: () => import('@/views/User')
+      },
+      {
+        path: 'user-edit',
+        component: () => import('@/views/User/UserEdit.vue')
+      }
+    ]
   }
 ]
 
