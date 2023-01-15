@@ -34,6 +34,10 @@ const routes = [
     props: true
   },
   {
+    path: '/user-edit',
+    component: () => import('@/views/User/UserEdit.vue')
+  },
+  {
     path: '/main',
     component: () => import('@/views/Main'),
     children: [
@@ -48,10 +52,6 @@ const routes = [
       {
         path: 'user',
         component: () => import('@/views/User')
-      },
-      {
-        path: 'user-edit',
-        component: () => import('@/views/User/UserEdit.vue')
       }
     ]
   }

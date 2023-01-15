@@ -22,7 +22,7 @@ import { mapState } from 'vuex'
 export default {
     created() {
         this.$http.get(`/inst/applyList/${this.userInfo.instId}`).then(res => {
-            console.log(res.data);
+            console.log('applyList', res.data);
             this.tableData = res.data.data
         })
     },
@@ -33,13 +33,13 @@ export default {
     },
     methods: {
         handlePass(row, isPass) {
-            this.$http.post(`/inst/audit/stu/apply/${this.userInfo.instId}/${row.id}/${isPass}`).then(res => {
+            this.$http.post(`/inst/audit/stu/apply/${this.userInfo.instId}/${row.applyId}/${isPass}`).then(res => {
                 if (isPass === 1) {
                     successMsg('已通过')
                 } else {
                     successMsg('已打回')
                 }
-                this.tableData = this.tableData.filter(item => item.stuId != row.stuId)
+                this.tableData = this.tableData.filter(item => item.id != row.id)
             })
         },
     },

@@ -91,11 +91,11 @@ export default {
                 "data": {
                     "tokenHead": "Bearer",
                     "userInfo": {
-                        "id": 1,
-                        "instId": 2,
-                        "username": "admin",
+                        "id": 2,
+                        "instId": 1,
+                        "username": "city_bus",
                         "password": null,
-                        "nickName": "admin",
+                        "nickName": "city_bus",
                         "icon": "c01c9690-2017-40e7-9df3-372561d2b8ca.jpg",
                         "email": null,
                         "rights": [
@@ -109,7 +109,7 @@ export default {
                             { "id": 18, "rightName": "学员信息管理", "father_right": 16 },
                             { "id": 19, "rightName": "学员学习记录", "father_right": 16 },
                         ],
-                        "note": "超级管理员账号",
+                        "note": "城市交通机构管理员",
                         "createTime": "2022-11-22 15:45:23",
                         "loginTime": "2023-01-13 00:10:07",
                         "status": 1
@@ -123,7 +123,7 @@ export default {
                         console.log('res', mockRes.data);
                         // setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
                         // successMsg('登陆成功')
-                        this.$store.commit('setUserInfo', res.data.data.userInfo)
+                        this.$store.commit('setUserInfo', mockRes.data.userInfo)
                         this.$store.commit('setUserRights', mockRes.data.userInfo.rights)
                         this.$router.push('/main')
                         // 获取权限信息 根据权限信息动态添加侧边栏和动态路由
@@ -144,11 +144,12 @@ export default {
         //                 successMsg('登陆成功')
         //                 // console.log('userInfo:', res.data.data.userInfo);
         //                 this.$store.commit('setUserInfo', res.data.data.userInfo)
+        //                 this.$router.push('/main')
         //                 // 获取权限信息
-        //                 await this.$http.get(`/ums/permission/${res.data.data.userInfo.id}`, this.model).then(res => {
-        //                     console.log(res);
-        //                     this.$router.push('/main')
-        //                 })
+        //                 // await this.$http.get(`/ums/permission/${res.data.data.userInfo.id}`, this.model).then(res => {
+        //                 //     console.log(res);
+        //                 //     this.$router.push('/main')
+        //                 // })
         //             })
         //         } else {
         //             errorMsg('检查填写！')

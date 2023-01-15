@@ -1,7 +1,8 @@
 <template>
     <div style="height:100%">
         <div>
-            <mu-appbar style="width: 100%;" title="交运通" color="primary" z-depth="0"></mu-appbar>
+            <mu-appbar style="width: 100%;" title="交运通" color="primary" z-depth="1">
+            </mu-appbar>
         </div>
         <router-view></router-view>
         <div class="footer">
