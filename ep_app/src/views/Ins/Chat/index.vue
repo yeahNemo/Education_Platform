@@ -25,7 +25,7 @@
             <mu-paper v-for="chat in chatList" :key="chat.id" class="chat-card" :z-depth="3">
                 <div class="user-ask" style="font-size:.875rem;margin-bottom: 3px;">
                     <span style="color:blue">
-                        {{ chat.userName }}
+                        {{ chat.username }}
                     </span>
                     <span>提问：</span>
                 </div>
@@ -48,30 +48,52 @@
             <mu-dialog title="咨询" width="360" scrollable :open.sync="isFormVisible">
                 <mu-form :model="form" class="mu-demo-form" label-position="top" label-width="100">
                     <mu-form-item prop="input" label="提问">
-                        <mu-text-field v-model="form.input" placeholder="请在此输入..." multi-line :rows="1"
-                            :rows-max="6"></mu-text-field>
+                        <mu-text-field v-model="form.question" placeholder="请在此输入..." multi-line :rows="1"
+                            :rows-max="6">
+                        </mu-text-field>
                     </mu-form-item>
                 </mu-form>
-                <mu-button slot="actions" flat color="primary">ok</mu-button>
+                <mu-button slot="actions" flat color="primary" @click="submitQuestion">提交</mu-button>
             </mu-dialog>
         </div>
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import { successMsg } from '@/utils/message'
 export default {
+    created() {
+        this.$http.get(`/question/list/${this.id}?answered=1`).then(res => {
+            // console.log(res.data.data);
+            this.chatList = res.data.data
+        })
+    },
+    mounted() {
+        this.form = {
+            userId: this.userInfo.id,
+            username: this.userInfo.username,
+            question: '',
+            instId: this.id
+        }
+    },
+    props: ['id'],
     methods: {
+        async submitQuestion() {
+            const res = await this.$http.post('/question/create', this.form)
+            // console.log(res);
+            this.isFormVisible = false
+            successMsg(res.data.message)
+        }
     },
     data() {
         return {
-            form: {
-                input: ''
-            },
+            form: {},
             isFormVisible: false,
             chatList: [
                 {
                     id: 0,
-                    userName: 'NEMO',
+                    username: 'NEMO',
                     question: '请问我是学生，能免费吗？',
                     answer: '你是畜生都不行。',
                     time: '2022-3-14'
@@ -79,8 +101,11 @@ export default {
             ]
         }
     },
-
+    computed: {
+        ...mapState(['userInfo'])
+    }
 }
+
 </script>
 
 <style scoped>

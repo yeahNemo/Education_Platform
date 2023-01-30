@@ -15,10 +15,10 @@
             <el-container>
                 <el-aside width="15rem" style="background-color: rgb(238, 241, 246)">
                     <el-menu router unique-opene :default-active="$route.path">
-                        <el-submenu :index="'' + item.id" v-for="item in getFatherRightList()" :key="item.id">
-                            <template slot="title"><i class="el-icon-message"></i>{{ item.rightName }}</template>
-                            <el-menu-item index="/main/stu-apply" v-for="subItem in getChildrenRightList(item.id)"
-                                :key="subItem.id">{{ subItem.rightName }}</el-menu-item>
+                        <el-submenu :index="item.uri" v-for="item in menuList" :key="item.id">
+                            <template slot="title"><i class="el-icon-message"></i>{{ item.name }}</template>
+                            <el-menu-item :index="subItem.uri" v-for="subItem in item.children"
+                                :key="subItem.id">{{ subItem.name }}</el-menu-item>
                         </el-submenu>
 
 
@@ -115,14 +115,18 @@
 
 <script>
 import { successMsg } from '@/utils/message'
-import { mapState } from 'vuex'
+import { mapState } from 'vuex';
 export default {
     created() {
-        this.$http.get('inst/type/get').then(res => {
+        // 获取机构种类
+        this.$http.get('inst/type/listAll').then(res => {
             this.instTypeList = res.data.data
-        });
-        this.menuList = this.userRights
-        console.log(this.menuList);
+        })
+        // 获取菜单
+        this.$http.get(`role/listRoleMenu/${this.userRole.id}`).then(res => {
+            this.menuList = res.data.data
+        })
+
     },
     data() {
         return {
@@ -146,12 +150,13 @@ export default {
             formLabelWidth: '5rem'
         }
     },
+    computed: {
+        ...mapState(['userInfo', 'userRole'])
+    },
+
     methods: {
-        getFatherRightList() {
-            return this.menuList.filter(item => item.father_right === 0)
-        },
-        getChildrenRightList(fatherId) {
-            return this.menuList.filter(item => item.father_right === fatherId)
+        getParentRightList() {
+            return this.menuList.filter(item => item.parentId === 0)
         },
         submit() {
             this.$refs['applyForm'].validate(async (result) => {
@@ -170,9 +175,6 @@ export default {
             });
         },
     },
-    computed: {
-        ...mapState(['userInfo', 'userRights'])
-    }
 }
 </script>
 

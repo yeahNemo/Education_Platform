@@ -14,15 +14,29 @@
         <mu-list>
             <mu-list-item button @click="showBottomSheet = true">
                 <mu-list-item-title>头像</mu-list-item-title>
+                <mu-list-item-action>
+                    <mu-avatar>
+                        <img :src="`http://localhost:8081/ums/icon/${this.userInfo.id}`" ref="avatar">
+                    </mu-avatar>
+                </mu-list-item-action>
             </mu-list-item>
             <mu-list-item button>
                 <mu-list-item-title>用户名</mu-list-item-title>
+                <mu-list-item-action>
+                    {{ userInfo.username }}
+                </mu-list-item-action>
             </mu-list-item>
             <mu-list-item button>
                 <mu-list-item-title>昵称</mu-list-item-title>
+                <mu-list-item-action>
+                    {{ userInfo.nickName }}
+                </mu-list-item-action>
             </mu-list-item>
             <mu-list-item button>
                 <mu-list-item-title>邮箱绑定</mu-list-item-title>
+                <mu-list-item-action>
+                    {{ userInfo.email }}
+                </mu-list-item-action>
             </mu-list-item>
         </mu-list>
         <mu-bottom-sheet :open.sync="showBottomSheet">
@@ -45,7 +59,8 @@
         <input type="file" hidden @change="onFileChange" ref="fileInput">
         <!-- 弹出层操作头像 -->
         <div v-if="showDialog" class="pop-over">
-            <update-photo :img="img" @close="showDialog = false"></update-photo>
+            <update-photo @closePop="showDialog = false" :img="img" :fileName="fileName"
+                @close="showDialog = false"></update-photo>
         </div>
         <!-- dialog组件不是全屏 -->
         <!-- <mu-dialog :open.sync="showDialog">
@@ -57,19 +72,27 @@
 
 <script>
 import UpdatePhoto from '@/components/UpdatePhoto.vue'
+import { mapState } from 'vuex'
 export default {
     components: { UpdatePhoto },
+    async mounted() {
+        // const res = await this.$http.get(`/ums/icon/${this.userInfo.id}`)
+        // this.$refs.avatar.src = 'http://localhost:8081/ums/icon/3'
+    },
     data() {
         return {
             showDialog: false,
             showBottomSheet: false,
             // 预览的头像
-            img: ''
+            img: '',
+            // 文件名
+            fileName: 'avatar.jpg'
         }
     },
     methods: {
         onFileChange() {
             const file = this.$refs.fileInput.files[0]
+            this.fileName = file.name
             // 基于文件对象获取 blob 数据
             this.img = window.URL.createObjectURL(file)
             this.showDialog = true
@@ -83,6 +106,9 @@ export default {
 
         }
     },
+    computed: {
+        ...mapState(['userInfo'])
+    }
 
 }
 </script>

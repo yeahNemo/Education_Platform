@@ -3,7 +3,62 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
+const instRoutes = [
+  {
+    path: "inst-info",
+    component: () => import("@/views/Inst/InstInfo.vue"),
+  },
+  {
+    path: "inst-chat",
+    component: () => import("@/views/Inst/Chat.vue"),
+  },
+  {
+    path: "video",
+    component: () => import("@/views/Asset/video.vue"),
+  },
+  {
+    path: "asset",
+    component: () => import("@/views/Asset/index"),
+  },
+  {
+    path: "stu-apply",
+    component: () => import("@/views/Inst/StudentApply.vue"),
+  },
+  {
+    path: "stu-list",
+    component: () => import("@/views/Inst/StudentList.vue"),
+  },
+];
+
+const adminRoutes = [
+  {
+    path: "docs",
+    component: () => import("@/views/Asset/docs_old.vue"),
+  },
+  {
+    path: "video",
+    component: () => import("@/views/Asset/video.vue"),
+  },
+  {
+    path: "inst-type",
+    component: () => import("@/views/Inst/TypeManage.vue"),
+  },
+  {
+    path: "inst-apply",
+    component: () => import("@/views/InstApplication"),
+  },
+];
+
 const routes = [
+  {
+    path: "/",
+    redirect: "/login",
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("@/views/Register"),
+  },
   {
     path: "/login",
     name: "login",
@@ -18,31 +73,7 @@ const routes = [
     path: "/main",
     name: "main",
     component: () => import("@/views/Main.vue"),
-    children: [
-      {
-        path: "video",
-        name: "video",
-        component: () => import("@/views/Asset/video.vue"),
-      },
-      {
-        path: "inst-type",
-        component: () => import("@/views/Inst/TypeManage.vue"),
-      },
-      {
-        path: "inst-apply",
-        name: "inst-apply",
-        component: () => import("@/views/InstApplication"),
-      },
-      {
-        path: "stu-apply",
-        component: () => import("@/views/Inst/StudentApply.vue"),
-      },
-    ],
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: () => import("@/views/Register"),
+    children: [...adminRoutes, ...instRoutes],
   },
 ];
 

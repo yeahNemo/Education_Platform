@@ -1,7 +1,7 @@
 <template>
     <div style="display: flex;flex-direction: column;">
         <mu-tabs :value.sync="active" inverse color="lightBlue800" text-color="rgba(0, 0, 0, .54)" full-width
-            indicator-color="lightBlue800" class="tab">
+            indicator-color="lightBlue800" class="header">
             <mu-tab>资料</mu-tab>
             <mu-tab>机构</mu-tab>
         </mu-tabs>
@@ -16,7 +16,7 @@
                             {{ inst.instName }}
                         </div>
                         <div class="ins-description">
-                            {{ typeList[inst.typeId]? typeList[inst.typeId].name : '' }}
+                            {{ typeList[inst.typeId].name }}
                         </div>
                     </div>
                 </div>
@@ -24,21 +24,9 @@
         </div>
         <div v-else>
             <h1>这里是共享资料</h1>
-            <mu-paper v-for="inst in insList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst.id)">
-                <div style="display: flex; flex-direction: row;">
-                    <div style="margin-right: 0.5rem; overflow: hidden;">
-                        <avatar :instId="inst.id"></avatar>
-                    </div>
-                    <div>
-                        <div class="ins-name">
-                            {{ inst.instName }}
-                        </div>
-                        <div class="ins-description">
-                            {{ typeList[inst.typeId]? typeList[inst.typeId].name : '' }}
-                        </div>
-                    </div>
-                </div>
-            </mu-paper>
+            <video id="myVideo" class="video-js">
+                <source :src="require('D:\\education_platform\\video.mp4')" type="video/mp4" />
+            </video>
         </div>
     </div>
 </template>
@@ -48,15 +36,34 @@ import avatar from '@/components/avatar.vue'
 export default {
     components: { avatar },
     async created() {
-        let res = await this.$http.get('/inst/all?keyword=&pageSize=&pageNum=')
-        this.insList = res.data.data.list
-        res = await this.$http.get('/inst/type/listAll')
+        this.$http.get('/inst/all?keyword=&pageSize=&pageNum=').then(
+            res => {
+                this.insList = res.data.data.list
+            }
+        )
+        const res = await this.$http.get('/inst/type/listAll')
         this.typeList = res.data.data
+        console.log('type', this.typeList)
+        // 播放器实例化
+        this.getVideo()
+
     },
     methods: {
         routeTo(instId) {
             this.$router.push(`/ins-home/${instId}`)
         },
+        getVideo() {
+            this.$nextTick(() => {
+                let myPlayer = this.$video(myVideo, {
+                    controls: true, //确定播放器是否具有用户可以与之交互的控件。没有控件，启动视频播放的唯一方法是使用autoplay属性或通过Player API。 
+                    //poster: CountyCoverUrl,//封面
+                    autoplay: 'muted', //自动播放属性,muted:静音播放
+                    preload: 'auto', //建议浏览器是否应在<video>加载元素后立即开始下载视频数据。
+                    width: "350px",
+                    height: "180px"
+                });
+            })
+        }
     },
     data() {
         return {
@@ -90,9 +97,9 @@ export default {
     text-overflow: ellipsis;
 }
 
-.tab {
+.header {
     position: sticky;
-    top: 3.5rem;
-    z-index: 10;
+    top: 0;
+    background-color: white;
 }
 </style>

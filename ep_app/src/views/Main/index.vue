@@ -8,7 +8,7 @@
         <div class="footer">
             <mu-bottom-nav>
                 <mu-bottom-nav-item title="首页" icon="home" to="/main/home"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="课程" icon="book"></mu-bottom-nav-item>
+                <mu-bottom-nav-item title="课程" icon="book" to="/main/course"></mu-bottom-nav-item>
                 <mu-bottom-nav-item title="我的" icon="account_circle" to="/main/user"></mu-bottom-nav-item>
             </mu-bottom-nav>
         </div>

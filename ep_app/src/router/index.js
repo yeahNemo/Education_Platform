@@ -24,6 +24,11 @@ const routes = [
     ]
   },
   {
+    path: '/inst-course/:id',
+    component: () => import('../views/Ins/CourseList.vue'),
+    props: true
+  },
+  {
     path: '/ins-home/:id',
     component: () => import('../views/Ins/index.vue'),
     props: true
@@ -52,6 +57,10 @@ const routes = [
       {
         path: 'user',
         component: () => import('@/views/User')
+      },
+      {
+        path: 'course',
+        component: () => import('@/views/Course')
       }
     ]
   }

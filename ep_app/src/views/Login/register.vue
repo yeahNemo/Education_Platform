@@ -87,7 +87,6 @@ export default {
                 }
             }).catch(e => {
                 console.log(e);
-
                 this.$toast.error('失败');
             })
             if (res === undefined) {

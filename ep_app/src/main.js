@@ -16,11 +16,17 @@ import 'muse-ui-loading/dist/muse-ui-loading.css' // load css
 import Loading from 'muse-ui-loading'
 // 引入 axios 并进行挂载
 import http from '@/utils/http'
+// 引入Video.js 视频播放组件
+import Videojs from 'video.js'
+import 'video.js/dist/video-js.css'
+
 // 引入一些 vant 的组件
 // 算了 暂时不引入了
 Toast.config({ position: 'bottom', time: '1500' })
 
 Vue.prototype.$http = http
+
+Vue.prototype.$video = Videojs
 
 Vue.use(Loading)
 

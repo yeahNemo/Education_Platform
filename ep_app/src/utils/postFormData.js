@@ -9,7 +9,7 @@ export default function postFormData (url, params) {
       })
       .then((res) => {
         resolve(res.data)
-        console.log('请求成功！')
+        // console.log('请求成功！')
       })
       .catch((err) => {
         reject(err.data)

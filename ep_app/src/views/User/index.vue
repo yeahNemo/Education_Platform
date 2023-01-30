@@ -4,7 +4,8 @@
             <mu-row class="avatar-name">
                 <div class="avatar">
                     <mu-avatar size="54" color="indigo">
-                        <mu-icon size="40" value="account_circle"></mu-icon>
+                        <!-- <mu-icon size="40" value="account_circle"></mu-icon> -->
+                        <img :src="require('D:\\education_platform\\inst.png')" alt="头像">
                     </mu-avatar>
                 </div>
                 <div class="user-name">
