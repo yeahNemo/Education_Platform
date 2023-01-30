@@ -44,7 +44,23 @@
             </mu-card>
         </div>
         <div class="inst-resource" v-else>
-            机构资料
+            <mu-paper v-for="item in instResourceList" :key="item.id" class="inst-card" :z-depth="3"
+                @click="openFile(item.storeName)">
+                <div style="display: flex; flex-direction: row;">
+                    <div style="margin-right: 0.5rem; overflow: hidden;">
+                        <!-- <avatar :instId="item.id">我是图片</avatar> -->
+                    </div>
+                    <div>
+                        <div class="inst-name">
+                            {{ item.filename }}
+                        </div>
+                        <div class="ins-description">
+                            {{ item.description }}
+                        </div>
+                    </div>
+                </div>
+            </mu-paper>
+
         </div>
     </div>
 </template>
@@ -55,32 +71,31 @@ export default {
     name: 'instHome',
     props: ['id'],
     async created() {
-        const res = await this.$http.get(`/inst/${this.id}`)
-        console.log('res', res);
+        let res = await this.$http.get(`/inst/${this.id}`)
+        // console.log('res', res);
         this.instObj = res.data.data
+        res = await this.$http.get(`/file/list/${this.id}`)
+        console.log('res', res)
+        this.instResourceList = res.data.data
     },
     data() {
         return {
             instObj: {},
-            tabValue: 0
-            // instObj: {
-            //     id: 1,
-            //     instName: '城市公交机构',
-            //     num: '当前人数：100',
-            //     description: `公共汽车的概念系由公共马车（Omnibus）发展而来。虽然在1662年的法国巴黎，就有类似公共马车（Omnibus）的运输服务“五索尔马车”出现，一度颇受大众欢迎，然而由于巴黎议会颁布的法令不允许“士兵、随从、仆人和其他劳动者”使用这项服务以及车资涨价，使得“五索尔马车”在15年后便走入历史。而公共马车（Omnibus）变得普及则是1820年代的事。
-            //     1824年，英国道路收费站管理人John Greenwood，在曼彻斯特（Manchester）与彭德尔顿（Pendleton）经营公共马车（Omnibus）服务，驾驶人应乘客请求随时让乘客上下车。
-            //     1826年，法国退休军官 Stanislas Baudry
-            //     在法国西北部的南特（Nantes）市郊开办磨面坊，将蒸汽机排出的热水供人洗澡而兴建公众浴场，并提供南特市中心与公众浴场之间的接驳马车服务。当他发现有些市民利用他的接驳马车作为移动手段，但并非前往他开设的公众浴场，他开始将接驳马车事业化，成立企业提供公共马车（Omnibus）服务。
-            //     1829年7月4日，世界第一辆校车的制造商，英国人George Shillibeer的公共马车（Omnibus）出现于伦敦街头，他开设了帕丁顿与英格兰银行之间的路线，并于沿线设新路（New
-            //     Road）、萨默斯镇（Somers Towns）与市路（City Rd）等停靠站，每日每个方向4班。不到十年，这一服务在法国、英国及美国东岸各大城市（如巴黎、里昂、伦敦、纽约）得到普及。
-            //     在公共马车（Omnibus）普及化后，蒸气式公共汽车（Steam
-            //     buses）与无轨电车（Trolleybuses）陆续问世。19世纪末至20世纪初，引擎（发动机）技术逐渐成熟，平治于1895年做出第一辆以内燃机驱动的公共汽车Benz Omnibus。
-            //     大部分公共汽车仍以汽油、柴油引擎为动力。近年有些国家开始研发使用液化石油气、压缩天然气，油电复合动力和纯电力驱动的公共汽车。`
-            // }
-
+            tabValue: 0,
+            instResourceList: []
         }
     },
     methods: {
+        async openFile(storeName) {
+            console.log(storeName.substr(-3, 3));
+
+            if (storeName.substr(-3, 3) === 'pdf') {
+                this.$router.push(`/pdf-file/${storeName}`)
+            }
+            else if (storeName.substr(-3, 3) === 'mp4') {
+                this.$router.push(`/video-file/${storeName}`)
+            }
+        },
         async handleJoin() {
             // Vuex取得用户信息，发送申请请求
             const res = await this.$http.post(`/inst/stu/apply/${this.userInfo.id}/${this.instObj.id}`)
@@ -105,5 +120,20 @@ export default {
     position: sticky;
     top: 3.5rem;
     z-index: 10;
+}
+
+.inst-card {
+    font-size: 12px;
+    border-radius: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    margin: 1rem 1rem;
+    height: auto;
+    max-height: 5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.inst-name {
+    font-size: 1rem;
 }
 </style>

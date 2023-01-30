@@ -52,6 +52,9 @@ export default {
         this.insList = res.data.data.list
         res = await this.$http.get('/inst/type/listAll')
         this.typeList = res.data.data
+        res = await this.$http.get('/file/shareDoc')
+        console.log(res);
+
     },
     methods: {
         routeTo(instId) {

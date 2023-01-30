@@ -24,6 +24,16 @@ const routes = [
     ]
   },
   {
+    path: '/video-file/:storeName',
+    component: () => import('../components/VideoViewer.vue'),
+    props: true
+  },
+  {
+    path: '/pdf-file/:storeName',
+    component: () => import('../components/PdfViewer.vue'),
+    props: true
+  },
+  {
     path: '/inst-course/:id',
     component: () => import('../views/Ins/CourseList.vue'),
     props: true
