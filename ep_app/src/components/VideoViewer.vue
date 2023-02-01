@@ -1,7 +1,7 @@
 <template>
     <div>
         <video id="myVideo" class="video-js">
-            <source :src="require('D:\\education_platform\\video.mp4')" type="video/mp4" />
+            <source :src="`http://localhost:8081/file/get/${this.storeName}`" type="video/mp4" />
         </video>
     </div>
 </template>

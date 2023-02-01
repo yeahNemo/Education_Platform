@@ -7,7 +7,6 @@
             </el-tab-pane>
             <el-tab-pane label="视频资源">
                 <h1>视频资源</h1>
-                <assetVideo></assetVideo>
             </el-tab-pane>
             <el-tab-pane label="试题资源">是否在此处配置试题资源？</el-tab-pane>
         </el-tabs>
@@ -15,9 +14,8 @@
 </template>
 
 <script>
-import assetVideo from './video.vue'
 export default {
-    components: { assetVideo },
+
 }
 </script>
 

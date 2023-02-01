@@ -7,7 +7,8 @@
                         <h1 style="color:azure">交运通后台管理系统</h1>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" style="margin-left: 33rem" @click="dialogFormVisible = true"
+                        <el-button type="success" style="position:relative; right:0; top: 0;"
+                            @click="dialogFormVisible = true"
                             :disabled="userInfo.status === 1">{{ userInfo.status === 1 ? '已激活' : '激活' }}</el-button>
                     </el-col>
                 </el-row>

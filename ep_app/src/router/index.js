@@ -34,7 +34,7 @@ const routes = [
     props: true
   },
   {
-    path: '/inst-course/:id',
+    path: '/inst-course/:instId',
     component: () => import('../views/Ins/CourseList.vue'),
     props: true
   },

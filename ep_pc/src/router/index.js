@@ -5,16 +5,16 @@ Vue.use(VueRouter);
 
 const instRoutes = [
   {
+    path: "inst-schedule",
+    component: () => import("@/views/Inst/Schedule.vue"),
+  },
+  {
     path: "inst-info",
     component: () => import("@/views/Inst/InstInfo.vue"),
   },
   {
     path: "inst-chat",
     component: () => import("@/views/Inst/Chat.vue"),
-  },
-  {
-    path: "video",
-    component: () => import("@/views/Asset/video.vue"),
   },
   {
     path: "asset",
@@ -32,12 +32,8 @@ const instRoutes = [
 
 const adminRoutes = [
   {
-    path: "docs",
-    component: () => import("@/views/Asset/docs_old.vue"),
-  },
-  {
-    path: "video",
-    component: () => import("@/views/Asset/video.vue"),
+    path: "file-upload",
+    component: () => import("@/views/Asset/FileUpload.vue"),
   },
   {
     path: "inst-type",

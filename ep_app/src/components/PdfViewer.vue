@@ -26,7 +26,7 @@ export default {
             currentPage: 1, // pdf文件页码
             totalCount: 0, // pdf文件总页数
             // 可引入网络文件或者本地文件
-            pdfUrl: `http://localhost:8081/file/${this.storeName}` // 如果引入本地pdf文件，需要将pdf放在public文件夹下，引用时使用绝对路径（/：表示public文件夹）
+            pdfUrl: `http://localhost:8081/file/get/${this.storeName}` // 如果引入本地pdf文件，需要将pdf放在public文件夹下，引用时使用绝对路径（/：表示public文件夹）
         }
     },
     created() {

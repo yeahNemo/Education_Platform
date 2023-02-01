@@ -3,9 +3,6 @@
         <h1>文档上传</h1>
         <div>
             <el-form :model="model" label-width="5rem">
-                <el-form-item label="类型" prop="type">
-                    <el-input v-model="model.type"></el-input>
-                </el-form-item>
                 <el-form-item label="文件名" prop="filename">
                     <el-input v-model="model.filename"></el-input>
                 </el-form-item>
@@ -13,9 +10,10 @@
                     <el-input v-model="model.description"></el-input>
                 </el-form-item>
                 <el-form-item label="上传">
-                    <el-upload class="upload-demo" action="http://localhost:8081/file/test" :on-preview="handlePreview"
-                        :on-remove="handleRemove" :before-remove="beforeRemove" multiple :limit="1"
-                        :on-exceed="handleExceed" :file-list="fileList" accept="doc,pdf" :on-success="handleSuccess">
+                    <el-upload class="upload-demo" action="http://localhost:8081/file/uploadFile"
+                        :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple
+                        :limit="1" :on-exceed="handleExceed" :file-list="fileList" accept="doc,pdf,mp4"
+                        :on-success="handleSuccess">
                         <el-button size="small" type="primary">点击上传</el-button>
                         <div slot="tip" class="el-upload__tip">上传文件</div>
                     </el-upload>
@@ -30,7 +28,18 @@
 </template>
 
 <script>
+import { successMsg } from '@/utils/message';
+import { mapState } from 'vuex';
+
 export default {
+    mounted() {
+        if (this.userRole.id === 1) {
+            this.model.type = 0
+        } else {
+            this.model.type = this.userInfo.instId
+        }
+
+    },
     data() {
         return {
             model: {
@@ -53,8 +62,10 @@ export default {
             this.fileToUpload = file
         },
         async submitForm() {
-            const res = await this.$http.post('/file/upload', this.model)
+            const res = await this.$http.post('/file/uploadDoc', this.model)
             console.log(res)
+            successMsg('上传成功')
+            this.$router.go(0)
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);
@@ -68,6 +79,9 @@ export default {
         beforeRemove(file, fileList) {
             return this.$confirm(`确定移除 ${file.name}？`);
         }
+    },
+    computed: {
+        ...mapState(['userRole', 'userInfo'])
     }
 }
 </script>

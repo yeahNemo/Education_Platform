@@ -86,7 +86,7 @@ export default {
         }
     },
     methods: {
-        async openFile(storeName) {
+        openFile(storeName) {
             console.log(storeName.substr(-3, 3));
 
             if (storeName.substr(-3, 3) === 'pdf') {

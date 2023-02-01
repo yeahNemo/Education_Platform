@@ -5,17 +5,17 @@
             <mu-tab>资料</mu-tab>
             <mu-tab>机构</mu-tab>
         </mu-tabs>
-        <div v-if="active == 1" class="ins-list">
-            <mu-paper v-for="inst in insList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst.id)">
+        <div v-if="active == 1" class="inst-list">
+            <mu-paper v-for="inst in insList" :key="inst.id" class="inst-card" :z-depth="3" @click="routeTo(inst.id)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
                         <avatar :instId="inst.id"></avatar>
                     </div>
                     <div>
-                        <div class="ins-name">
+                        <div class="inst-name">
                             {{ inst.instName }}
                         </div>
-                        <div class="ins-description">
+                        <div class="inst-description">
                             {{ typeList[inst.typeId]? typeList[inst.typeId].name : '' }}
                         </div>
                     </div>
@@ -23,18 +23,18 @@
             </mu-paper>
         </div>
         <div v-else>
-            <h1>这里是共享资料</h1>
-            <mu-paper v-for="inst in insList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst.id)">
+            <mu-paper v-for="item in publicResourceList" :key="item.id" class="inst-card" :z-depth="3"
+                @click="openFile(item.storeName)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
-                        <avatar :instId="inst.id"></avatar>
+                        <!-- <avatar :instId="item.id">我是图片</avatar> -->
                     </div>
                     <div>
-                        <div class="ins-name">
-                            {{ inst.instName }}
+                        <div class="inst-name">
+                            {{ item.filename }}
                         </div>
-                        <div class="ins-description">
-                            {{ typeList[inst.typeId]? typeList[inst.typeId].name : '' }}
+                        <div class="inst-description">
+                            {{ item.description }}
                         </div>
                     </div>
                 </div>
@@ -53,36 +53,43 @@ export default {
         res = await this.$http.get('/inst/type/listAll')
         this.typeList = res.data.data
         res = await this.$http.get('/file/shareDoc')
-        console.log(res);
+        this.publicResourceList = res.data.data
 
     },
     methods: {
         routeTo(instId) {
             this.$router.push(`/ins-home/${instId}`)
         },
+        openFile(storeName) {
+            console.log(storeName.substr(-3, 3));
+
+            if (storeName.substr(-3, 3) === 'pdf') {
+                this.$router.push(`/pdf-file/${storeName}`)
+            }
+            else if (storeName.substr(-3, 3) === 'mp4') {
+                this.$router.push(`/video-file/${storeName}`)
+            }
+        },
     },
     data() {
         return {
             active: 0,
             insList: [],
-            typeList: []
+            typeList: [],
+            publicResourceList: []
         }
     },
 }
 </script>
 
 <style scoped>
-.ins-name {
-    font-size: 1rem;
-}
-
-.ins-list {
+.inst-list {
     /* background-color: white; */
     flex-grow: 1;
     margin-bottom: 3.5rem;
 }
 
-.ins-card {
+.inst-card {
     font-size: 12px;
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem;
@@ -91,6 +98,10 @@ export default {
     max-height: 5rem;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.inst-name {
+    font-size: 1rem;
 }
 
 .tab {

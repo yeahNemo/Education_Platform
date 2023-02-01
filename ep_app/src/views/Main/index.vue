@@ -6,7 +6,7 @@
         </div>
         <router-view></router-view>
         <div class="footer">
-            <mu-bottom-nav>
+            <mu-bottom-nav :value.sync="active">
                 <mu-bottom-nav-item title="首页" icon="home" to="/main/home"></mu-bottom-nav-item>
                 <mu-bottom-nav-item title="课程" icon="book" to="/main/course"></mu-bottom-nav-item>
                 <mu-bottom-nav-item title="我的" icon="account_circle" to="/main/user"></mu-bottom-nav-item>
@@ -19,7 +19,7 @@
 export default {
     data() {
         return {
-            active: 0
+            active: 1
         }
     },
 
