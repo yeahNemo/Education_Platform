@@ -44,6 +44,11 @@ export default {
             planList: []
         }
     },
+    methods: {
+        routeTo(planId) {
+            this.$router.push(`/plan-task/${planId}`)
+        }
+    },
 }
 </script>
 

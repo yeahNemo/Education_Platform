@@ -1,10 +1,23 @@
 <template>
-    <div class="m-vue-pdf">
-        <div class="u-page" v-show="loaded">
-            {{ currentPage }}/{{ totalCount }}
+    <div>
+        <div class="header">
+            <mu-appbar style="width: 100%;" title="文档任务" color="primary" z-depth="3">
+                <mu-button @click="$router.back()" icon slot="left">
+                    <svg t="1673361192767" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="1165" width="300" height="300">
+                        <path d="M669.44 285.44L442.88 512l226.56 226.56-58.88 58.88L325.12 512l285.44-285.44z"
+                            fill="#ffffff" p-id="1166"></path>
+                    </svg>
+                </mu-button>
+            </mu-appbar>
         </div>
-        <Pdf :src="pdfUrl" :page="currentPage" @num-pages="totalCount = $event" @page-loaded="currentPage = $event"
-            @loaded="loadPdfHandler" />
+        <div class="m-vue-pdf">
+            <div class="u-page" v-show="loaded">
+                {{ currentPage }}/{{ totalCount }}
+            </div>
+            <Pdf :src="pdfUrl" :page="currentPage" @num-pages="totalCount = $event" @page-loaded="currentPage = $event"
+                @loaded="loadPdfHandler" />
+        </div>
     </div>
 </template>
 <script>

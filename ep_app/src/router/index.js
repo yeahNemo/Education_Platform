@@ -24,6 +24,11 @@ const routes = [
     ]
   },
   {
+    path: '/plan-task/:planId',
+    component: () => import('../views/Ins/TaskList.vue'),
+    props: true
+  },
+  {
     path: '/video-file/:storeName',
     component: () => import('../components/VideoViewer.vue'),
     props: true

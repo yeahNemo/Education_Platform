@@ -54,6 +54,9 @@
             </div>
         </el-dialog>
         <el-dialog title="任务点" :visible.sync="configDialogVisible">
+            <el-button size="small" type="primary" @click="handleTaskAdd">
+                添加
+            </el-button>
             <el-table :data="taskTableData" stripe style="width: 100%">
                 <el-table-column prop="title" label="标题" width="180">
                 </el-table-column>
@@ -68,9 +71,27 @@
                     </template>
                 </el-table-column>
             </el-table>
+        </el-dialog>
+        <el-dialog title="任务点" :visible.sync="taskFormVisible">
+            <el-form :model="taskToAdd">
+                <div style="padding-right:3rem">
+                    <el-form-item label="标题" prop="title" label-width="120">
+                        <el-input v-model="taskToAdd.title" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="内容" prop="content" label-width="120">
+                        <el-input v-model="taskToAdd.content" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="关联文件" prop="filename" label-width="120">
+                        <el-select v-model="taskToAdd.filename" placeholder="选择关联文件">
+                            <el-option v-for="item in instResourceList" :key="item.id" :label="item.filename"
+                                :value="item.storeName"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </div>
+            </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="configDialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="configDialogVisible = false">提 交</el-button>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="submitNewTask">提 交</el-button>
             </div>
         </el-dialog>
     </div>
@@ -85,9 +106,12 @@ export default {
         this.tableData = res.data.data
         res = await this.$http.get('/plan/type/list')
         this.planTypeList = res.data.data
+        res = await this.$http.get(`/file/list/${this.userInfo.instId}`)
+        this.instResourceList = res.data.data
     },
     data() {
         return {
+            taskFormVisible: false,
             configDialogVisible: false,
             dialogVisible: false,
             tableData: [],
@@ -96,16 +120,29 @@ export default {
             model: {
                 instId: ''
             },
-            isUpdate: false
+            taskToAdd: {
+
+            },
+            isUpdate: false,
+            instResourceList: []
         }
     },
     methods: {
+        async submitNewTask() {
+            const res = await this.$http.post('/planTask/add', this.taskToAdd)
+            console.log('taskAdd', res);
+            this.taskFormVisible = false
+            successMsg('添加成功！')
+        },
+        handleTaskAdd() {
+            this.taskFormVisible = true
+        },
         async handleConfig(row) {
-            // const res = await this.$http.get(`/planTask/getById/${row.id}`)
+            const res = await this.$http.get(`/planTask/getByInstId/${row.id}`)
             // console.log('res!!', res);
-            // this.taskTableData = res.data.data
-            // this.configDialogVisible = true
-            // TODO 配置培训计划的任务点
+            this.taskToAdd.planId = row.id
+            this.taskTableData = res.data.data
+            this.configDialogVisible = true
         },
         async handleDel(row) {
             const res = await this.$http.post(`/plan/delete/${row.id}`)
