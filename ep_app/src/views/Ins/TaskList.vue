@@ -13,8 +13,8 @@
         </div>
         <div class="main">
             <mu-list>
-                <mu-list-item @click="openFile(item.filename, item.id)" v-for="item in taskList" :key="item.id" button
-                    :ripple="true">
+                <mu-list-item @click="openFile(item.filename, item.id, item.title, item.content)"
+                    v-for="item in taskList" :key="item.id" button :ripple="true">
                     <mu-list-item-title>{{ item.title }}</mu-list-item-title>
                     <p :id="`${item.id}`" :fun="isTaskFinished(item.id)"></p>
                 </mu-list-item>
@@ -65,7 +65,7 @@ export default {
             }
 
         },
-        async openFile(storeName, taskId) {
+        async openFile(storeName, taskId, title, description) {
 
             const res = await this.$http.get(`/taskProcess/getProcess/${this.userInfo.id}/${taskId}`)
 
@@ -84,7 +84,7 @@ export default {
 
             }
             else if (storeName.substr(-3, 3) === 'mp4') {
-                this.$router.push({ path: `/video-file/${storeName}`, query: { recordId: res.data.data.id, taskId, userId: this.userInfo.id } })
+                this.$router.push({ path: `/video-file/${storeName}`, query: { recordId: res.data.data.id, taskId, userId: this.userInfo.id, title, description } })
             }
         },
     },

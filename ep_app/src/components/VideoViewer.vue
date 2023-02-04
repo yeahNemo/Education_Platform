@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            <mu-appbar style="width: 100%;" title="视频任务" color="primary" z-depth="3">
+            <mu-appbar style="width: 100%;" title="视频" color="primary" z-depth="3">
                 <mu-button @click="$router.back()" icon slot="left">
                     <svg t="1673361192767" class="icon" viewBox="0 0 1024 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="1165" width="300" height="300">
@@ -11,11 +11,19 @@
                 </mu-button>
             </mu-appbar>
         </div>
+        <div class="title">
+            <h3>
+                {{ $route.query.title || '在线观看' }}
+            </h3>
+        </div>
         <div class="player">
             <video-player class="video-player vjs-custom-skin" ref="videoPlayer" :playsinline="true"
                 :options="playerOptions" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)"
                 @timeupdate="onPlayerTimeupdate($event)" @ready="playerReadied" @ended="onPlayerEnded($event)">
             </video-player>
+        </div>
+        <div class="description">
+            {{ $route.query.title || '暂无介绍' }}
         </div>
     </div>
 </template>
@@ -43,7 +51,9 @@ export default {
                 fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                 sources: [{
                     type: "video/mp4",
-                    src: `http://localhost:8081/file/get/${this.storeName}` //你的视频地址（必填）
+                    // src: `http://localhost:8081/file/get/${this.storeName}` //你的视频地址（必填）
+                    // 下面后端说可以自动分段
+                    src: `http://localhost:8081/file/video/${this.storeName}` //你的视频地址（必填）
                 }],
                 poster: "", //你的封面地址
                 width: document.documentElement.clientWidth,
@@ -68,7 +78,6 @@ export default {
                         id: this.$route.query.recordId,
                         videoProcess: Number(this.gk)
                     })
-                console.log('video', res);
 
             }
         },
@@ -78,8 +87,20 @@ export default {
         onPlayerPause(player) {
             // 暂停回调
         },
-        onPlayerEnded($event) {
+        async onPlayerEnded($event) {
             //播放完成回调
+            if (this.timer) {
+                clearInterval(this.timer)
+            }
+            if (this.$route.query.recordId) {
+                const res = await this.$http.post(`/taskProcess/update`,
+                    {
+                        finished: 1,
+                        id: this.$route.query.recordId,
+                        videoProcess: Number(this.gk)
+                    })
+
+            }
         },
         goFast() {
             //快进

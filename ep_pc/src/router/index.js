@@ -5,6 +5,10 @@ Vue.use(VueRouter);
 
 const instRoutes = [
   {
+    path: "ques-bank",
+    component: () => import("@/views/Inst/QuestionBank.vue"),
+  },
+  {
     path: "inst-schedule",
     component: () => import("@/views/Inst/Schedule.vue"),
   },
