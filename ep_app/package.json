@@ -15,6 +15,7 @@
     "less-loader": "^11.1.0",
     "muse-ui": "^3.0.2",
     "muse-ui-loading": "^0.2.0",
+    "muse-ui-message": "^0.2.1",
     "muse-ui-toast": "^0.3.0",
     "pdfjs-dist": "2.5.207",
     "typeface-roboto": "^1.1.13",
@@ -25,6 +26,7 @@
     "vue-pdf": "4.2.0",
     "vue-router": "^3.5.1",
     "vue-video-player": "5.0.1",
+    "vue2-editor": "^2.10.3",
     "vuex": "^3.6.2",
     "vuex-persistedstate": "^4.1.0"
   },

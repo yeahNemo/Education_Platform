@@ -139,9 +139,9 @@
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="题目" label-width="120">
-                        <!-- <el-input @change="handleKeywordChange" class="search-bar" placeholder="输入关键字" size="small"
-                            v-model="searchKeyword" clearable /> -->
-                        <el-table ref="quesTable" @selection-change="handleSelectionChange" :data="quesBankShow" stripe
+                        <el-input @change="handleKeywordChange" class="search-bar" placeholder="输入关键字" size="small"
+                            v-model="searchKeyword" clearable />
+                        <el-table @selection-change="handleSelectionChange" :data="quesBankShow" stripe
                             style="width: 100%">
                             <el-table-column type="selection" width="55">
                             </el-table-column>
@@ -211,8 +211,17 @@ export default {
         }
     },
     methods: {
+        handleKeywordChange() {
+            if (this.searchKeyword === '') {
+                this.quesBankShow = []
+                this.quesBankShow = [...this.quesBank]
+            } else {
+                this.quesBankShow = [...this.quesBank.filter(item => (item.content).includes(this.searchKeyword))]
+                console.log('show', this.quesBankShow);
+            }
+        },
         handleSelectionChange(val) {
-            this.testToAdd.examProblems = val
+            console.log('val', val);
         },
         async taskHandleDel(row) {
             const res = await this.$http.post(`/planTask/delete/${row.id}`)
@@ -225,10 +234,9 @@ export default {
             this.reload()
         },
         async submitNewTest() {
-            this.testToAdd.exam.planId = this.selectedPlanId
+            this.testToAdd.planId = this.selectedPlanId
             const res = await this.$http.post(`/exam/publish`, this.testToAdd)
             successMsg('添加成功')
-            this.reload()
         },
         handleTestAdd() {
             this.testFormVisible = true

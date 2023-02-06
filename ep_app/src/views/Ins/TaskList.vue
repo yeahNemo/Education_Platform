@@ -10,36 +10,70 @@
                     </svg>
                 </mu-button>
             </mu-appbar>
+            <mu-tabs :value.sync="tabActive" inverse color="lightBlue800" text-color="rgba(0, 0, 0, .54)" full-width
+                indicator-color="lightBlue800" class="tab">
+                <mu-tab>任务</mu-tab>
+                <mu-tab>考试</mu-tab>
+            </mu-tabs>
         </div>
         <div class="main">
-            <mu-list>
-                <mu-list-item @click="openFile(item.filename, item.id, item.title, item.content)"
-                    v-for="item in taskList" :key="item.id" button :ripple="true">
-                    <mu-list-item-title>{{ item.title }}</mu-list-item-title>
-                    <p :id="`${item.id}`" :fun="isTaskFinished(item.id)"></p>
-                </mu-list-item>
-            </mu-list>
+            <div class="task-list" v-if="tabActive === 0">
+                <mu-list>
+                    <mu-list-item @click="openFile(item.filename, item.id, item.title, item.content)"
+                        v-for="item in taskList" :key="item.id" button :ripple="true">
+                        <mu-list-item-title>{{ item.title }}</mu-list-item-title>
+                        <p :id="`${item.id}`" :fun="isTaskFinished(item.id)"></p>
+                    </mu-list-item>
+                </mu-list>
+            </div>
+            <div class="test-list" v-else>
+                <mu-list>
+                    <mu-list-item @click="startTest(item.id, item.submitted)" v-for="item in testList" :key="item.id"
+                        button :ripple="true">
+                        <mu-list-item-title>{{ item.title }}</mu-list-item-title>
+                        <label>{{ item.submitted === 1 ? '完成' : '待考' }}</label>
+                    </mu-list-item>
+                </mu-list>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import Message from 'muse-ui-message'
 import { mapState } from 'vuex';
 export default {
     props: ['planId'],
     async mounted() {
-        const res = await this.$http.get(`/planTask/getByInstId/${this.planId}`)
-        console.log(res);
-
+        let res = await this.$http.get(`/planTask/getByInstId/${this.planId}`)
+        // console.log(res);
         this.taskList = res.data.data
+        res = await this.$http.get(`/exam/stu/${this.userInfo.id}/${this.planId}`)
+        // console.log(res);
+        this.testList = res.data.data
+
+        //TODO 自己改的
+        this.testList[0].submitted = 1
     },
     data() {
         return {
-            taskList: []
+            tabActive: 0,
+            taskList: [],
+            testList: []
         }
     },
     methods: {
-
+        async startTest(testId, submitted) {
+            if (submitted === 0) {
+                Message.confirm('确定开始？考试不允许暂停！').then((({ result }) => {
+                    if (result) {
+                        this.$router.push(`/test/${testId}`)
+                    }
+                }))
+            } else if (submitted === 1) {
+                this.$router.push({ path: '/test-result', query: { adminId: this.userInfo.id, examId: testId } })
+            }
+        },
         async isTaskFinished(taskId) {
             // console.log(taskId);
             const res = await this.$http.get(`/taskProcess/getProcess/${this.userInfo.id}/${taskId}`)

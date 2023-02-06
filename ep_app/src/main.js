@@ -9,6 +9,8 @@ import 'muse-ui/dist/muse-ui.css'
 import 'typeface-roboto'
 // 使用Toast插件
 import Toast from 'muse-ui-toast'
+// 引入MuseUI的Message
+// import 'muse-ui-message/dist/muse-ui-message.css'
 // 引入工具（动画等）
 import Helpers from 'muse-ui/lib/Helpers'
 // 引入loading

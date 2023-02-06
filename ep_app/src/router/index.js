@@ -24,8 +24,17 @@ const routes = [
     ]
   },
   {
+    path: '/test-result',
+    component: () => import('../views/Ins/TestDetail.vue')
+  },
+  {
     path: '/plan-task/:planId',
     component: () => import('../views/Ins/TaskList.vue'),
+    props: true
+  },
+  {
+    path: '/test/:testId',
+    component: () => import('../views/Ins/Test.vue'),
     props: true
   },
   {

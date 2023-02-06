@@ -14,7 +14,7 @@
             </mu-row>
             <div>
                 <mu-paper class="info-paper" :z-depth="4">
-                    公交机构认证学员
+                    交运通认证学员
                 </mu-paper>
             </div>
             <mu-list>
@@ -80,6 +80,7 @@ export default {
     border-radius: 1rem;
     padding: 1.5rem 1.5rem;
     margin: 1rem 1rem;
+    font-weight: bold;
     /* background: url('@/assets/User/bg.jpg') no-repeat;
     background-size: cover;
     background-position: 50% 50%; */

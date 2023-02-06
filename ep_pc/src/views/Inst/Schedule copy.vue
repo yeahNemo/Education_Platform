@@ -138,12 +138,16 @@
                             type="datetime" placeholder="选择时间">
                         </el-date-picker>
                     </el-form-item>
-                    <el-form-item label="题目" label-width="120">
-                        <!-- <el-input @change="handleKeywordChange" class="search-bar" placeholder="输入关键字" size="small"
-                            v-model="searchKeyword" clearable /> -->
-                        <el-table ref="quesTable" @selection-change="handleSelectionChange" :data="quesBankShow" stripe
-                            style="width: 100%">
-                            <el-table-column type="selection" width="55">
+                    <el-form-item label="题目" prop="problemScores" label-width="120">
+                        <el-input @change="handleKeywordChange" class="search-bar" placeholder="输入关键字" size="small"
+                            v-model="searchKeyword" clearable />
+                        <el-table :data="quesBankShow" stripe style="width: 100%">
+                            <el-table-column label="选择" width="90">
+                                <template slot-scope="scope">
+                                    <el-checkbox v-model="scope.row.checked"
+                                        @change="($event, event) => { handleSelectQues(event, scope.row) }"></el-checkbox>
+                                    <!-- <el-button type="text" @click="testHandleDel(scope.row)">删除</el-button> -->
+                                </template>
                             </el-table-column>
                             <el-table-column prop="content" label="内容">
                             </el-table-column>
@@ -160,6 +164,10 @@
                                 </template>
                             </el-table-column>
                         </el-table>
+                        <!-- <el-select v-model="testToAdd.problemScores" placeholder="勾选题目" multiple filterable>
+                            <el-option v-for="item in quesBank" :key="item.id" :label="item.content"
+                                :value="item.id"></el-option>
+                        </el-select> -->
                     </el-form-item>
                 </div>
             </el-form>
@@ -211,8 +219,38 @@ export default {
         }
     },
     methods: {
-        handleSelectionChange(val) {
-            this.testToAdd.examProblems = val
+        handleKeywordChange() {
+            if (this.searchKeyword === '') {
+                this.quesBankShow = []
+                this.quesBankShow = [...this.quesBank]
+            } else {
+                this.quesBankShow = [...this.quesBank.filter(item => (item.content).includes(this.searchKeyword))]
+                this.quesBankShow.forEach(item => {
+                    this.testToAdd.examProblems.forEach(item2 => {
+                        if (item.id === item2.id) {
+                            item.checked = true
+                        } else {
+                            item.checked = false
+                        }
+                    })
+                })
+                console.log('show', this.quesBankShow);
+            }
+
+        },
+        handleSelectQues(ev, row) {
+            // 我把 checked 和 score 挂载到了 row对象上
+            // console.log('checked', ev.currentTarget.checked);
+            // console.log('ev', ev);
+            // console.log('row', row);
+            if (row.score) {
+                successMsg('选择成功')
+                row.checked = true
+                this.testToAdd.examProblems.push(row)
+            } else {
+                errorMsg('填写分数后选择')
+                row.checked = false
+            }
         },
         async taskHandleDel(row) {
             const res = await this.$http.post(`/planTask/delete/${row.id}`)
@@ -225,10 +263,9 @@ export default {
             this.reload()
         },
         async submitNewTest() {
-            this.testToAdd.exam.planId = this.selectedPlanId
+            this.testToAdd.planId = this.selectedPlanId
             const res = await this.$http.post(`/exam/publish`, this.testToAdd)
             successMsg('添加成功')
-            this.reload()
         },
         handleTestAdd() {
             this.testFormVisible = true
