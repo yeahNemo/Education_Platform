@@ -24,17 +24,17 @@
                     </mu-list-item-action>
                     <mu-list-item-title>个人资料</mu-list-item-title>
                 </mu-list-item>
+                <mu-list-item button to="/user-message-box">
+                    <mu-list-item-action>
+                        <mu-icon value="send"></mu-icon>
+                    </mu-list-item-action>
+                    <mu-list-item-title>收件箱</mu-list-item-title>
+                </mu-list-item>
                 <mu-list-item button>
                     <mu-list-item-action>
                         <mu-icon value="grade"></mu-icon>
                     </mu-list-item-action>
                     <mu-list-item-title>机构信息</mu-list-item-title>
-                </mu-list-item>
-                <mu-list-item button>
-                    <mu-list-item-action>
-                        <mu-icon value="send"></mu-icon>
-                    </mu-list-item-action>
-                    <mu-list-item-title>咨询客服</mu-list-item-title>
                 </mu-list-item>
                 <mu-list-item button>
                     <mu-list-item-action>

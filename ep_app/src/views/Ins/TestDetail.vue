@@ -13,7 +13,7 @@
         </div>
         <div class="main">
             <div v-if="showForbidden">
-                考试截至前无法查阅
+                考试截止前无法查阅！
             </div>
             <div v-else>
                 <div class="single-ques-detail" v-for=" (item, index)  in quesDetailList" :key="index">
@@ -52,7 +52,6 @@ export default {
 <style scoped>
 .single-ques-detail {
     margin: 1rem 1rem 1rem 1rem;
-    /* padding: 1rem 1rem 1rem 1rem; */
 }
 
 .demo-paper {

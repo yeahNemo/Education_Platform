@@ -15,8 +15,9 @@
                                 @click="flag = !flag"></i>
                         </el-input>
                     </el-form-item>
-                    <el-form-item style="display: flex; justify-content: start;">
+                    <el-form-item style="display: flex; justify-content: center;">
                         <el-button @click="submit" type="primary">登录</el-button>
+                        <el-button @click="$router.push('/register')" style="margin-left:5rem">注册</el-button>
                     </el-form-item>
                 </el-form>
             </div>
@@ -139,7 +140,7 @@ export default {
             this.$refs['registerForm'].validate(async (result) => {
                 if (result) {
                     await this.$http.post('ums/login', this.model).then(async res => {
-                        console.log(res);
+                        // console.log(res);
                         setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
                         successMsg('登陆成功')
                         // console.log('userInfo:', res.data.data.userInfo);

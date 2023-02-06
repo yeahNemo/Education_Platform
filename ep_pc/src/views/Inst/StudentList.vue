@@ -10,7 +10,7 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="handleMore(scope.row)">更多</el-button>
+                    <el-button type="text" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -32,8 +32,8 @@ export default {
         }
     },
     methods: {
-        handleMore(row) {
-            // 更多按钮
+        handleDel(row) {
+            // TODO 机构删除学员
         }
     },
     computed: {

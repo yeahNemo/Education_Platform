@@ -28,10 +28,10 @@
             </div>
             <div class="test-list" v-else>
                 <mu-list>
-                    <mu-list-item @click="startTest(item.id, item.submitted)" v-for="item in testList" :key="item.id"
-                        button :ripple="true">
+                    <mu-list-item @click="startTest(item)" v-for="item in testList" :key="item.id" button
+                        :ripple="true">
                         <mu-list-item-title>{{ item.title }}</mu-list-item-title>
-                        <label>{{ item.submitted === 1 ? '完成' : '待考' }}</label>
+                        <label>{{ getTestState(item) }}</label>
                     </mu-list-item>
                 </mu-list>
             </div>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { errorMsg } from '@/utils/message';
 import Message from 'muse-ui-message'
 import { mapState } from 'vuex';
 export default {
@@ -51,9 +52,6 @@ export default {
         res = await this.$http.get(`/exam/stu/${this.userInfo.id}/${this.planId}`)
         // console.log(res);
         this.testList = res.data.data
-
-        //TODO 自己改的
-        this.testList[0].submitted = 1
     },
     data() {
         return {
@@ -63,15 +61,31 @@ export default {
         }
     },
     methods: {
-        async startTest(testId, submitted) {
-            if (submitted === 0) {
-                Message.confirm('确定开始？考试不允许暂停！').then((({ result }) => {
+        getTestState(test) {
+            const nowTime = new Date()
+            const endTime = new Date(test.endTime)
+            if (nowTime > endTime) {
+                return '逾期'
+            } else {
+                return test.submitted === 1 ? '完成' : '待做'
+            }
+        },
+        async startTest(test) {
+            const nowTime = new Date()
+            const endTime = new Date(test.endTime)
+            if (nowTime > endTime) {
+                errorMsg('考试已逾期')
+                return
+            }
+            if (test.submitted === 0) {
+                Message.confirm('确定开始？考试不允许暂停！').then((async ({ result }) => {
                     if (result) {
-                        this.$router.push(`/test/${testId}`)
+                        const res = await this.$http.post('/exam/exam-log', { adminId: this.userInfo.id, examId: test.id })
+                        this.$router.push({ path: `/test/${test.id}`, query: { planId: this.planId } })
                     }
                 }))
-            } else if (submitted === 1) {
-                this.$router.push({ path: '/test-result', query: { adminId: this.userInfo.id, examId: testId } })
+            } else if (test.submitted === 1) {
+                this.$router.push({ path: '/test-result', query: { adminId: this.userInfo.id, examId: test.id } })
             }
         },
         async isTaskFinished(taskId) {

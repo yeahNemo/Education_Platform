@@ -11,7 +11,7 @@ service.interceptors.response.use(
     const message = response.data.message
     if (code === 400) {
       Toast.error(message)
-      return Promise.reject(response)
+      return Promise.resolve(response)
     }
     return Promise.resolve(response)
   },

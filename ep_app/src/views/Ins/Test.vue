@@ -2,6 +2,7 @@
     <div>
         <div class="header">
             <mu-appbar style="width: 100%;" title="正在考试" color="primary" z-depth="3">
+                <span slot="right" class="left-time">剩余时间：{{ leftSeccond }}秒</span>
                 <!-- <mu-button @click="exitTest" icon slot="left">
                     <svg t="1673361192767" class="icon" viewBox="0 0 1024 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="1165" width="300" height="300">
@@ -30,14 +31,35 @@
 import { successMsg } from '@/utils/message'
 import Message from 'muse-ui-message'
 import { mapState } from 'vuex'
+import dayjs from 'dayjs'
 export default {
     props: ['testId'],
     async mounted() {
-        const res = await this.$http.get(`/exam/getById/${this.testId}`)
+        let res = await this.$http.get(`/exam/getById/${this.testId}`)
         this.examObj = res.data.data
+        // this.nowTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
+        res = await this.$http.get(`/exam/stu/${this.userInfo.id}/${this.$route.query.planId}`)
+        console.log('res', res.data.data, 'testId', this.testId);
+        this.userTestLogObj = (res.data.data).find(item => item.id === Number(this.testId))
+        // 剩余时间等于 考试持续时间 - (现在时间 - 进入时间)
+        this.leftSeccond = this.userTestLogObj.totalTime * 60 - (dayjs().diff(dayjs(this.userTestLogObj.enterTime), 'second'))
+        let that = this
+        this.timer = setInterval(async () => {
+            if (that.leftSeccond <= 0 || dayjs() > dayjs(that.userTestLogObj.endTime)) {
+                clearInterval(that.timer)
+                const res = await this.$http.post(`/exam/submit-answer`, this.userAnswer)
+                successMsg('已自动提交！')
+                this.$router.back()
+                return
+            }
+            this.leftSeccond--
+        }, 1000);
     },
     data() {
         return {
+            timer: null,
+            userTestLogObj: null,
+            leftSeccond: '',
             examObj: {
                 exam: {},
                 problems: []
@@ -67,7 +89,12 @@ export default {
     },
     computed: {
         ...mapState(['userInfo'])
-    }
+    },
+    destroyed() {
+        if (this.timer != null) {
+            clearInterval(this.timer)
+        }
+    },
 }
 </script>
 

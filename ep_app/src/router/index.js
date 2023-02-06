@@ -24,6 +24,10 @@ const routes = [
     ]
   },
   {
+    path: '/user-message-box',
+    component: () => import('../views/User/MessageBox.vue')
+  },
+  {
     path: '/test-result',
     component: () => import('../views/Ins/TestDetail.vue')
   },

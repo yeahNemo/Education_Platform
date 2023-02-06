@@ -38,8 +38,8 @@
                     {{ instObj.description }}
                 </mu-card-text>
                 <mu-card-actions>
-                    <mu-button @click="handleJoin()" color="success" style="margin:0 1rem 1rem 0.5rem">加入机构</mu-button>
-                    <mu-button color="error">退出机构</mu-button>
+                    <mu-button :disabled="isJoined" @click="handleJoin()" color="success"
+                        style="margin:0 1rem 1rem 0.5rem">申请加入</mu-button>
                 </mu-card-actions>
             </mu-card>
         </div>
@@ -77,15 +77,30 @@ export default {
         res = await this.$http.get(`/file/list/${this.id}`)
         console.log('res', res)
         this.instResourceList = res.data.data
+        this.handleIsJoined()
     },
     data() {
         return {
             instObj: {},
             tabValue: 0,
-            instResourceList: []
+            instResourceList: [],
+            isJoined: false
         }
     },
     methods: {
+        async handleIsJoined() {
+            const res = await this.$http.get(`/inst/stuInstList/${this.userInfo.id}`)
+            const inst = res.data.data.find(item => item.id === Number(this.id))
+            console.log('inst', inst);
+
+            if (inst === undefined) {
+                this.isJoined = false
+                console.log('未加入');
+            } else {
+                this.isJoined = true
+                console.log('已加入');
+            }
+        },
         openFile(storeName) {
             console.log(storeName.substr(-3, 3));
 
@@ -100,6 +115,7 @@ export default {
             // Vuex取得用户信息，发送申请请求
             const res = await this.$http.post(`/inst/stu/apply/${this.userInfo.id}/${this.instObj.id}`)
             this.$toast.success('申请成功');
+            this.isJoined = true
         }
     },
 

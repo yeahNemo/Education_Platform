@@ -143,6 +143,12 @@
                             v-model="searchKeyword" clearable /> -->
                         <el-table ref="quesTable" @selection-change="handleSelectionChange" :data="quesBankShow" stripe
                             style="width: 100%">
+                            <el-table-column prop="score" label="分数" width="70">
+                                <template slot-scope="scope">
+                                    <el-input :fun="scope.row.score = 10" size="small"
+                                        v-model="scope.row.score"></el-input>
+                                </template>
+                            </el-table-column>
                             <el-table-column type="selection" width="55">
                             </el-table-column>
                             <el-table-column prop="content" label="内容">
@@ -152,11 +158,6 @@
                             <el-table-column prop="type" label="类型" width="180">
                                 <template slot-scope="scope">
                                     <p> {{ scope.row.type === 1 ? '选择题' : '填空题' }}</p>
-                                </template>
-                            </el-table-column>
-                            <el-table-column prop="score" label="分数" width="70">
-                                <template slot-scope="scope">
-                                    <el-input size="small" v-model="scope.row.score"></el-input>
                                 </template>
                             </el-table-column>
                         </el-table>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="header">
-            <mu-appbar style="width: 100%;" title="文档任务" color="primary" z-depth="3">
+            <mu-appbar style="width: 100%;" title="文档" color="primary" z-depth="3">
                 <mu-button @click="$router.back()" icon slot="left">
                     <svg t="1673361192767" class="icon" viewBox="0 0 1024 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="1165" width="300" height="300">
@@ -23,6 +23,7 @@
 <script>
 import Pdf from 'vue-pdf'
 export default {
+    inject: ['reload'],
     props: ['storeName'],
     name: 'VuePdfPaging',
     components: {
@@ -100,7 +101,13 @@ export default {
             this.currentPage = 1 // 加载的时候先加载第一页
             this.loaded = true
         }
-    }
+    },
+    destroyed() {
+        // this.reload()
+        this.$router.go(0)
+        // console.log('刷新');
+
+    },
 }
 </script>
 <style lang="less" scoped>

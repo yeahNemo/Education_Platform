@@ -1,3 +1,4 @@
+import { getToken } from "@/utils/auth";
 import Vue from "vue";
 import VueRouter from "vue-router";
 
@@ -35,6 +36,15 @@ const instRoutes = [
 ];
 
 const adminRoutes = [
+  {
+    path: "/admin-inst-info/:instId",
+    component: () => import("@/views/Admin/SingleInstInfo.vue"),
+    props: true,
+  },
+  {
+    path: "all-inst",
+    component: () => import("@/views/Admin/AllInstInfo.vue"),
+  },
   {
     path: "file-upload",
     component: () => import("@/views/Asset/FileUpload.vue"),
@@ -74,6 +84,17 @@ const routes = [
     name: "main",
     component: () => import("@/views/Main.vue"),
     children: [...adminRoutes, ...instRoutes],
+  },
+  {
+    name: "404",
+    path: "/404.html",
+    component: () => import("@/views/Error404.vue"),
+  },
+  {
+    path: "*",
+    redirect: {
+      name: "404",
+    },
   },
 ];
 
