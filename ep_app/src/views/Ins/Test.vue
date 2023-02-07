@@ -15,7 +15,8 @@
         <div class="main">
             <div class="single-ques" v-for="item in examObj.problems" :key="item.id">
                 <mu-paper class="demo-paper" :z-depth="3">
-                    {{ item.content }}
+                    <!-- {{ item.content }} -->
+                    <p v-html="item.content"></p>
                     <br>
                     <mu-text-field v-model="item.userAnswer"></mu-text-field>
                 </mu-paper>
