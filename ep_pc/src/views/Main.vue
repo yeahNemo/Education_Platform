@@ -3,13 +3,17 @@
         <el-container style="height:100%">
             <el-header style="display: flex; align-items: center; font-size: 1rem;" height="4rem">
                 <el-row type="flex" justify="center" align="middle">
-                    <el-col :span="22">
+                    <el-col :span="20">
                         <h1 style="color:azure">交运通后台管理系统</h1>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" style="position:relative; right:0; top: 0;"
+                        <el-button type="success" style="position:relative; left:0; top: 0;"
                             @click="dialogFormVisible = true"
                             :disabled="userRole.id !== 0">{{ userRole.id === 0 ? '激活' : '已激活' }}</el-button>
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button type="danger" style="position:relative; left:5rem; top: 0;"
+                            @click="exit">退出</el-button>
                     </el-col>
                 </el-row>
             </el-header>
@@ -161,6 +165,7 @@ export default {
     },
     data() {
         return {
+            name: 'Main',
             instList: [],
             menuList: [],
             rules: {
@@ -192,6 +197,11 @@ export default {
     },
 
     methods: {
+        exit() {
+            sessionStorage.clear()
+            this.$router.push('/login')
+            successMsg('已退出')
+        },
         async submitRole() {
             this.roleModel.adminId = this.userInfo.id
             //TODO admin-role-relation 表添加一条记录

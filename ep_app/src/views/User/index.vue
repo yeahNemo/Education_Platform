@@ -36,7 +36,7 @@
                     </mu-list-item-action>
                     <mu-list-item-title>机构信息</mu-list-item-title>
                 </mu-list-item>
-                <mu-list-item button>
+                <mu-list-item button @click="exit">
                     <mu-list-item-action>
                         <mu-icon value="drafts"></mu-icon>
                     </mu-list-item-action>
@@ -48,6 +48,8 @@
 </template>
 
 <script>
+import { successMsg } from '@/utils/message'
+
 export default {
     data() {
         return {
@@ -55,7 +57,11 @@ export default {
         }
     },
     methods: {
-
+        exit() {
+            sessionStorage.clear()
+            this.$router.push('/login')
+            successMsg('已退出')
+        }
     },
 
 }

@@ -19,7 +19,7 @@
 export default {
     data() {
         return {
-            active: 1
+            active: 0
         }
     },
 

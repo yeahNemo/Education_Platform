@@ -37,6 +37,18 @@ const instRoutes = [
 
 const adminRoutes = [
   {
+    path: "shared-ques-bank",
+    component: () => import("@/views/Admin/SharedQuestionBank.vue"),
+  },
+  {
+    path: "plan-type",
+    component: () => import("@/views/Admin/PlanTypeManage.vue"),
+  },
+  {
+    path: "/main/shared-asset",
+    component: () => import("@/views/Admin/SharedAsset.vue"),
+  },
+  {
     path: "/admin-inst-info/:instId",
     component: () => import("@/views/Admin/SingleInstInfo.vue"),
     props: true,
@@ -51,7 +63,7 @@ const adminRoutes = [
   },
   {
     path: "inst-type",
-    component: () => import("@/views/Inst/TypeManage.vue"),
+    component: () => import("@/views/Admin/InstTypeManage.vue"),
   },
   {
     path: "inst-apply",
@@ -68,11 +80,13 @@ const routes = [
     path: "/register",
     name: "register",
     component: () => import("@/views/Register"),
+    meta: { isPublic: true },
   },
   {
     path: "/login",
     name: "login",
     component: () => import("@/views/Login"),
+    meta: { isPublic: true },
   },
   {
     path: "/home",
@@ -81,7 +95,6 @@ const routes = [
   },
   {
     path: "/main",
-    name: "main",
     component: () => import("@/views/Main.vue"),
     children: [...adminRoutes, ...instRoutes],
   },
@@ -89,6 +102,7 @@ const routes = [
     name: "404",
     path: "/404.html",
     component: () => import("@/views/Error404.vue"),
+    meta: { isPublic: true },
   },
   {
     path: "*",
@@ -100,6 +114,24 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+});
+
+// 导航守卫限制路由跳转
+router.beforeEach((to, from, next) => {
+  if (to.meta.isPublic) {
+    // 判断该路由是否需要登录权限
+    next();
+  } else {
+    // console.log("token", getToken());
+    if (getToken() !== null) {
+      //判断本地是否存在access_token
+      next();
+    } else {
+      next({
+        path: "/login",
+      });
+    }
+  }
 });
 
 export default router;

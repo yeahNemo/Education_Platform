@@ -1,3 +1,4 @@
+import { getToken } from '@/utils/auth'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -14,12 +15,14 @@ const routes = [
     children: [
       {
         path: '/',
-        component: () => import('../views/Login/login.vue')
+        component: () => import('../views/Login/login.vue'),
+        meta: { isPublic: true }
       },
       {
         path: '/register',
         name: 'register',
-        component: () => import('../views/Login/register.vue')
+        component: () => import('../views/Login/register.vue'),
+        meta: { isPublic: true }
       }
     ]
   },
@@ -96,6 +99,24 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+// 导航守卫限制路由跳转
+router.beforeEach((to, from, next) => {
+  if (to.meta.isPublic) {
+    // 判断该路由是否需要登录权限
+    next()
+  } else {
+    // console.log("token", getToken());
+    if (getToken() !== null) {
+      // 判断本地是否存在access_token
+      next()
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  }
 })
 
 export default router

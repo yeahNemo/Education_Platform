@@ -1,5 +1,5 @@
 export function getToken() {
-  sessionStorage.getItem("token");
+  return sessionStorage.getItem("token");
 }
 
 export function setToken(token) {

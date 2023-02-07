@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h3>机构类型</h3>
+        <h3>培训类型</h3>
         <el-button type="primary" size="small" @click="handleAdd">添加</el-button>
-        <el-table :data="typeList" stripe>
-            <el-table-column label="机构编号" prop="id" width="300">
+        <el-table :data="planList" stripe>
+            <el-table-column label="培训编号" prop="id" width="300">
             </el-table-column>
-            <el-table-column label="机构名" prop="name">
+            <el-table-column label="培训类型" prop="name">
             </el-table-column>
             <el-table-column>
                 <template slot-scope="scope">
@@ -33,9 +33,10 @@
 
 <script>
 export default {
+    inject: ['reload'],
     created() {
-        this.$http.get('inst/type/get').then(res => {
-            this.typeList = res.data.data
+        this.$http.get('/plan/type/list').then(res => {
+            this.planList = res.data.data
         })
     },
     data() {
@@ -45,7 +46,7 @@ export default {
                     { required: true, message: '请输入名称', trigger: 'blur' }
                 ]
             },
-            typeList: [],
+            planList: [],
             dialogFormVisible: false,
             isAdd: true,
             editId: '',
@@ -56,15 +57,15 @@ export default {
         }
     },
     methods: {
-        // TODO 增删改查尚未测试
         handleEdit(row) {
             this.isAdd = false
             this.dialogFormVisible = true
             this.editId = row.id
         },
         handleDelete(row) {
-            this.$http.delete(`inst/type/delete/${row.id}`).then(res => {
-                console.log(res);
+            this.$http.post(`/plan/type/delete/${row.id}`).then(res => {
+                // console.log(res);
+                this.reload()
             })
         },
         handleAdd() {
@@ -73,12 +74,18 @@ export default {
         },
         submit() {
             if (this.isAdd) {
-                this.$http.post('inst/type/add', this.model).then(res => {
-                    console.log(res);
+                this.$http.post('/plan/type/create', this.model).then(res => {
+                    // console.log(res);
+                    // console.log('刷新');
+                    this.reload()
                 })
             } else {
                 this.model.id = this.editId
-                this.$http.post('inst/type/update', model)
+                this.$http.post('/plan/type/update', model).then(res => {
+                    // console.log('刷新');
+                    this.reload()
+                })
+
             }
             this.dialogFormVisible = false
         }
