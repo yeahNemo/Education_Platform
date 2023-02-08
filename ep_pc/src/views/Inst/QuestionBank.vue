@@ -93,7 +93,7 @@ export default {
       tableData: [],
       quesToAdd: {
         planId: '',
-        type: 1,
+        type: '',
         content: '',
         answer: ''
       },

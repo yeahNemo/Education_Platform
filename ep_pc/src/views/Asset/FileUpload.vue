@@ -32,13 +32,13 @@ import { successMsg } from '@/utils/message';
 import { mapState } from 'vuex';
 
 export default {
+    inject: ['reload'],
     mounted() {
         if (this.userRole.id === 1) {
             this.model.type = 0
         } else {
             this.model.type = this.userInfo.instId
         }
-
     },
     data() {
         return {
@@ -49,12 +49,21 @@ export default {
                 storeName: ''
             },
             fileList: [],
+            isEdit: false
         }
     },
     methods: {
+        // 父组件在调用这俩方法
+        handleEdit(editObj) {
+            this.isEdit = true
+            this.model = editObj
+        },
+        handleAdd() {
+            this.isEdit = false
+            this.model = this.$options.data().model
+        },
         handleSuccess(res) {
-            console.log(res);
-
+            // console.log(res);
             this.model.storeName = res.data
         },
         handleChange(file, fileList) {
@@ -62,10 +71,22 @@ export default {
             this.fileToUpload = file
         },
         async submitForm() {
-            const res = await this.$http.post('/file/uploadDoc', this.model)
-            console.log(res)
-            successMsg('上传成功')
-            this.$router.go(0)
+            if (this.userRole.id === 1) {
+                this.model.type = 0
+            } else {
+                this.model.type = this.userInfo.instId
+            }
+            if (this.isEdit) {
+                const res = await this.$http.post('/file/update', this.model)
+                console.log(res)
+                successMsg('修改成功')
+                this.reload()
+            } else {
+                const res = await this.$http.post('/file/uploadDoc', this.model)
+                console.log(res)
+                successMsg('上传成功')
+                this.reload()
+            }
         },
         handleRemove(file, fileList) {
             console.log(file, fileList);

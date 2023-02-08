@@ -8,7 +8,7 @@
                 </el-col>
             </el-form-item>
             <el-form-item label="机构头像">
-                <el-upload class="avatar-uploader" :headers="getAuthHeaders()"
+                <el-upload class="avatar-uploader"
                     :action="`http://localhost:8081/inst/upload/icon/${this.userInfo.instId}`" :show-file-list="false"
                     :on-success="afterUpload">
                     <img v-if="model.icon" :src="model.icon" class="avatar">

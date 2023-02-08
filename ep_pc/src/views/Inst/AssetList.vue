@@ -1,12 +1,12 @@
 <template>
     <div>
-        <h1>共享文件配置</h1>
+        <h1>资源管理</h1>
         <div>
             <el-button size="small" type="primary" @click="handleAdd">添加</el-button>
-            <el-table :data="sharedDocList">
+            <el-table :data="assetList" stripe style="width: 100%">
                 <el-table-column prop="filename" label="文件名" width="180">
                 </el-table-column>
-                <el-table-column prop="description" label="文件描述" width="180">
+                <el-table-column prop="description" label="介绍" width="180">
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -25,21 +25,24 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { successMsg } from '@/utils/message'
 import FileUpload from '../Asset/FileUpload.vue'
 export default {
-    inject: ['reload'],
-    async mounted() {
-        const res = await this.$http.get('/file/shareDoc')
-        this.sharedDocList = res.data.data
-    },
     components: {
         FileUpload
     },
+    inject: ['reload'],
+    async mounted() {
+        const res = await this.$http.get(`/file/list/${this.userInfo.instId}`)
+        let allAsset = res.data.data
+        // 只查机构单独的
+        this.assetList = allAsset.filter(item => item.type !== 0)
+    },
     data() {
         return {
-            dialogVisible: false,
-            sharedDocList: [],
+            assetList: [],
+            dialogVisible: false
         }
     },
     methods: {
@@ -54,7 +57,6 @@ export default {
             const res = await this.$http.post(`/file/delete/${row.storeName}`)
             successMsg('删除成功')
             this.reload()
-
         },
         handleAdd() {
             this.dialogVisible = true
@@ -63,7 +65,9 @@ export default {
             })
         }
     },
-
+    computed: {
+        ...mapState(['userInfo'])
+    }
 }
 </script>
 

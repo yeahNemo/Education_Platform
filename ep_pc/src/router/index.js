@@ -23,7 +23,7 @@ const instRoutes = [
   },
   {
     path: "asset",
-    component: () => import("@/views/Asset/index"),
+    component: () => import("@/views/Inst/AssetList"),
   },
   {
     path: "stu-apply",
@@ -50,7 +50,7 @@ const adminRoutes = [
   },
   {
     path: "/admin-inst-info/:instId",
-    component: () => import("@/views/Admin/SingleInstInfo.vue"),
+    component: () => import("@/views/Admin/InstInfo.vue"),
     props: true,
   },
   {

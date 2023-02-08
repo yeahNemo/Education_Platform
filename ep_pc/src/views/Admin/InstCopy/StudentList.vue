@@ -10,7 +10,7 @@
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text" @click="handleDel(scope.row)">移除</el-button>
+                    <el-button type="text" @click="handleDel(scope.row)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -19,11 +19,12 @@
 
 <script>
 import { successMsg } from '@/utils/message';
-import { mapState } from 'vuex';
+
 export default {
     inject: ['reload'],
+    props: ['instId'],
     created() {
-        this.$http.get(`inst/${this.userInfo.instId}/stu`).then(res => {
+        this.$http.get(`inst/${this.instId}/stu`).then(res => {
             console.log(res);
             this.tableData = res.data.data
         })
@@ -35,14 +36,11 @@ export default {
     },
     methods: {
         async handleDel(row) {
-            const res = await this.$http.post(`/inst/delete-stu/${this.userInfo.instId}/${row.id}`)
+            const res = await this.$http.post(`/inst/delete-stu/${this.instId}/${row.id}`)
             successMsg('删除成功')
             this.reload()
         }
     },
-    computed: {
-        ...mapState(['userInfo'])
-    }
 }
 </script>
 
