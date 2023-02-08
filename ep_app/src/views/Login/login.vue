@@ -49,13 +49,14 @@ export default {
         submit() {
             this.$refs.form.validate().then(async (result) => {
                 if (result) {
-                    await this.$http.post('ums/login', this.model).then(res => {
-                        console.log(res);
-                        setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
-                        // Vuex保存用户数据
-                        this.$store.commit('setUserInfo', res.data.data.userInfo)
-                        this.$router.push('/main/home')
-                    })
+                    let res = await this.$http.post('ums/login', this.model)
+                    setToken(res.data.data.tokenHead + ' ' + res.data.data.token)
+                    // Vuex保存用户数据
+                    this.$store.commit('setUserInfo', res.data.data.userInfo)
+                    // Vuex初始化收件箱
+                    res = await this.$http.get(`/inst/message-box/${res.data.data.userInfo.id}`)
+                    this.$store.commit('setUserMessageBox', res.data.data)
+                    this.$router.push('/main/home')
                 }
             });
         },

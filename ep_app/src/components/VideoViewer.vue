@@ -163,5 +163,15 @@ export default {
 </script>
 
 <style scoped>
-.vjs-custom-skin {}
+.title {
+    margin-left: 1rem;
+}
+
+.player {
+    padding: 0 1rem 1rem 1rem;
+}
+
+.description {
+    margin: 1rem 1rem 1rem 1rem;
+}
 </style>

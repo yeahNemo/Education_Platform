@@ -16,13 +16,14 @@
             <mu-list>
                 <mu-list-item @click="showMsg(item)" v-for="item in msgList" :key="item.id" button :ripple="true">
                     <mu-list-item-title>{{ item.title }}</mu-list-item-title>
+                    <div v-if="item.readed === 0" class="nemo-status-point" style=" background-color:#409EFF" />
                 </mu-list-item>
             </mu-list>
         </div>
         <div>
             <mu-dialog :title="selectedItem.title" width="360" :open.sync="msgDialogVisible">
                 <span v-html="selectedItem.content"></span>
-                <mu-button slot="actions" flat color="primary" @click="msgDialogVisible = false">确认</mu-button>
+                <mu-button slot="actions" flat color="primary" @click="handleConfirm">确认</mu-button>
             </mu-dialog>
         </div>
     </div>
@@ -32,8 +33,9 @@
 import { mapState } from 'vuex';
 export default {
     async mounted() {
-        const res = await this.$http.get(`/inst/message-box/${this.userInfo.id}`)
-        this.msgList = res.data.data
+        // const res = await this.$http.get(`/inst/message-box/${this.userInfo.id}`)
+        // this.msgList = res.data.data
+        this.msgList = this.userMessageBox
     },
     data() {
 
@@ -47,17 +49,32 @@ export default {
         }
     },
     methods: {
+        async handleConfirm() {
+            // 设置已读
+            let res = await this.$http.get(`/inst/message/${this.selectedItem.id}`)
+            // 重新请求messageBox以更新
+            res = await this.$http.get(`/inst/message-box/${this.userInfo.id}`)
+            this.$store.commit('setUserMessageBox', res.data.data)
+            this.msgList = this.userMessageBox
+            this.msgDialogVisible = false
+        },
         showMsg(msg) {
             this.selectedItem = msg
             this.msgDialogVisible = true
         }
     },
     computed: {
-        ...mapState(['userInfo'])
+        ...mapState(['userInfo', 'userMessageBox'])
     }
 }
 </script>
 
-<style>
-
+<style scoped>
+.nemo-status-point {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
 </style>

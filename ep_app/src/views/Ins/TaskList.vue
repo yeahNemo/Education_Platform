@@ -11,7 +11,7 @@
                 </mu-button>
             </mu-appbar>
             <mu-tabs :value.sync="tabActive" inverse color="lightBlue800" text-color="rgba(0, 0, 0, .54)" full-width
-                indicator-color="lightBlue800" class="tab">
+                indicator-color="lightBlue800" class="nemo-tab">
                 <mu-tab>任务</mu-tab>
                 <mu-tab>考试</mu-tab>
             </mu-tabs>
@@ -22,7 +22,7 @@
                     <mu-list-item @click="openFile(item.filename, item.id, item.title, item.content)"
                         v-for="item in taskList" :key="item.id" button :ripple="true">
                         <mu-list-item-title>{{ item.title }}</mu-list-item-title>
-                        <p :id="`${item.id}`" :fun="isTaskFinished(item.id)"></p>
+                        <div :id="`${item.id}`" :fun="isTaskFinished(item.id)"></div>
                     </mu-list-item>
                 </mu-list>
             </div>
@@ -31,7 +31,7 @@
                     <mu-list-item @click="startTest(item)" v-for="item in testList" :key="item.id" button
                         :ripple="true">
                         <mu-list-item-title>{{ item.title }}</mu-list-item-title>
-                        <label>{{ getTestState(item) }}</label>
+                        <span v-html="getTestState(item)"></span>
                     </mu-list-item>
                 </mu-list>
             </div>
@@ -65,9 +65,9 @@ export default {
             const nowTime = new Date()
             const endTime = new Date(test.endTime)
             if (nowTime > endTime) {
-                return '逾期'
+                return '<div class="nemo-status-point" style=" background-color:#F56C6C" />'
             } else {
-                return test.submitted === 1 ? '完成' : '待做'
+                return test.submitted === 1 ? '<div class="nemo-status-point" style=" background-color:#67C23A" />' : '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
             }
         },
         async startTest(test) {
@@ -100,14 +100,14 @@ export default {
                         'videoProcess': '0',
                         'finished': 0
                     })
-                textDom.innerText = '待做'
+                textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
                 return false
             } else {
                 if (res.data.data.finished === 0) {
-                    textDom.innerText = '待做'
+                    textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
                     return false
                 } else {
-                    textDom.innerText = '已做'
+                    textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#67C23A" />'
                     return true
                 }
             }
@@ -143,5 +143,17 @@ export default {
 </script>
 
 <style>
+.nemo-status-point {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
 
+.nemo-tab {
+    position: sticky;
+    top: 3.5rem;
+    z-index: 10;
+}
 </style>

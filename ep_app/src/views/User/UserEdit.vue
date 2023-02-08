@@ -20,13 +20,20 @@
                     </mu-avatar>
                 </mu-list-item-action>
             </mu-list-item>
+            <!-- <mu-list-item button @click="userNameDialogVisible = true">
+                <mu-list-item-title>用户名</mu-list-item-title>
+                <mu-list-item-action>
+                    {{ userInfo.username }}
+                </mu-list-item-action>
+            </mu-list-item> -->
+            <!-- 修改用户名有风险重名，砍掉了 暂不支持 -->
             <mu-list-item button>
                 <mu-list-item-title>用户名</mu-list-item-title>
                 <mu-list-item-action>
                     {{ userInfo.username }}
                 </mu-list-item-action>
             </mu-list-item>
-            <mu-list-item button>
+            <mu-list-item button @click="nickNameDialogVisible = true">
                 <mu-list-item-title>昵称</mu-list-item-title>
                 <mu-list-item-action>
                     {{ userInfo.nickName }}
@@ -62,16 +69,24 @@
             <update-photo @closePop="showDialog = false" :img="img" :fileName="fileName"
                 @close="showDialog = false"></update-photo>
         </div>
-        <!-- dialog组件不是全屏 -->
-        <!-- <mu-dialog :open.sync="showDialog">
-            <update-photo :img="img"></update-photo>
-            <mu-button slot="actions" flat color="primary" @click="showDialog = false">Close</mu-button>
-        </mu-dialog> -->
+        <!-- 用户名修改 -->
+        <mu-dialog title="修改用户名" width="360" scrollable :open.sync="userNameDialogVisible">
+            <mu-text-field v-model="newUserName" placeholder="新用户名">
+            </mu-text-field>
+            <mu-button slot="actions" flat color="primary" @click="changeUserName">提交</mu-button>
+        </mu-dialog>
+        <!-- 昵称修改 -->
+        <mu-dialog title="修改昵称" width="360" scrollable :open.sync="nickNameDialogVisible">
+            <mu-text-field v-model="newNickName" placeholder="新昵称">
+            </mu-text-field>
+            <mu-button slot="actions" flat color="primary" @click="changeNickName">提交</mu-button>
+        </mu-dialog>
     </div>
 </template>
 
 <script>
 import UpdatePhoto from '@/components/UpdatePhoto.vue'
+import { successMsg } from '@/utils/message'
 import { mapState } from 'vuex'
 export default {
     components: { UpdatePhoto },
@@ -86,7 +101,11 @@ export default {
             // 预览的头像
             img: '',
             // 文件名
-            fileName: 'avatar.jpg'
+            fileName: 'avatar.jpg',
+            newUserName: '',
+            newNickName: '',
+            userNameDialogVisible: false,
+            nickNameDialogVisible: false
         }
     },
     methods: {
@@ -104,6 +123,21 @@ export default {
         },
         editAvatar() {
 
+        },
+        async changeUserName() {
+            const res = await this.$http.post(`/ums/update/info/${this.userInfo.id}`, {
+                username: this.newUserName
+            })
+            successMsg('修改成功')
+            this.userNameDialogVisible = false
+        },
+        async changeNickName() {
+            const res = await this.$http.post(`/ums/update/info/${this.userInfo.id}`, {
+                nickName: this.newNickName
+            })
+            successMsg('修改成功')
+            this.$store.commit('setUserNickName', res.data.data.nickName)
+            this.nickNameDialogVisible = false
         }
     },
     computed: {

@@ -7,12 +7,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    userInfo: {}
+    userInfo: {},
+    userMessageBox: []
   },
   getters: {},
   mutations: {
     setUserInfo (state, value) {
       state.userInfo = value
+    },
+    setUserNickName (state, value) {
+      state.userInfo.nickName = value
+    },
+    setUserMessageBox (state, value) {
+      state.userMessageBox = value
     }
   },
   actions: {},

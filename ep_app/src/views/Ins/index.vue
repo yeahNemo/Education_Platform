@@ -18,7 +18,7 @@
             <mu-tab>公开资料</mu-tab>
         </mu-tabs>
         <div class="inst-info" v-if="tabValue === 0">
-            <mu-card style="display: flex; flex-direction: column; width: 100%; min-height: 92%;">
+            <mu-card style="display: flex; flex-direction: column; width: 100%; min-height: inherit">
                 <div style="display: flex;">
                     <mu-card-header :title="instObj.instName" sub-title="交运通认证">
                         <mu-avatar slot="avatar">
@@ -126,6 +126,10 @@ export default {
 </script>
 
 <style scoped>
+.inst-info {
+    min-height: 35.2rem;
+}
+
 .header {
     position: sticky;
     top: 0;

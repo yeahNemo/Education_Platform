@@ -201,6 +201,7 @@ export default {
             sessionStorage.clear()
             this.$router.push('/login')
             successMsg('已退出')
+            window.location.reload()
         },
         async submitRole() {
             this.roleModel.adminId = this.userInfo.id

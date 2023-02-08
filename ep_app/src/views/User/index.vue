@@ -30,12 +30,6 @@
                     </mu-list-item-action>
                     <mu-list-item-title>收件箱</mu-list-item-title>
                 </mu-list-item>
-                <mu-list-item button>
-                    <mu-list-item-action>
-                        <mu-icon value="grade"></mu-icon>
-                    </mu-list-item-action>
-                    <mu-list-item-title>机构信息</mu-list-item-title>
-                </mu-list-item>
                 <mu-list-item button @click="exit">
                     <mu-list-item-action>
                         <mu-icon value="drafts"></mu-icon>
@@ -61,6 +55,7 @@ export default {
             sessionStorage.clear()
             this.$router.push('/login')
             successMsg('已退出')
+            window.location.reload()
         }
     },
     computed: {

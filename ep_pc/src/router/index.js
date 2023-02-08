@@ -6,6 +6,14 @@ Vue.use(VueRouter);
 
 const instRoutes = [
   {
+    path: "stu-study",
+    component: () => import("@/views/Inst/StudentStudy.vue"),
+  },
+  {
+    path: "stu-test",
+    component: () => import("@/views/Inst/StudentTest.vue"),
+  },
+  {
     path: "ques-bank",
     component: () => import("@/views/Inst/QuestionBank.vue"),
   },
@@ -72,9 +80,14 @@ const adminRoutes = [
 ];
 
 const routes = [
+  // {
+  //   path: "/",
+  //   redirect: "/login",
+  // },
   {
     path: "/",
-    redirect: "/login",
+    component: () => import("@/views/Home"),
+    meta: { isPublic: true },
   },
   {
     path: "/register",

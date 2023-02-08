@@ -13,7 +13,7 @@
         </div>
         <div class="main">
             <div v-if="showForbidden">
-                考试截止前无法查阅！
+                <div style="padding:1rem; font-weight: bold; font-size: large;">考试截至前无法查阅！</div>
             </div>
             <div v-else>
                 <div class="single-ques-detail" v-for=" (item, index)  in quesDetailList" :key="index">

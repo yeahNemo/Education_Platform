@@ -14,7 +14,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="添加类型" :visible.sync="dialogFormVisible">
+        <el-dialog title="类型" :visible.sync="dialogFormVisible">
             <el-form ref="typeForm" :model="model" :rules="rules">
                 <div style="padding-right:3rem">
                     <el-form-item label="类型名称" prop="name" label-width="5rem">
@@ -49,7 +49,6 @@ export default {
             typeList: [],
             dialogFormVisible: false,
             isAdd: true,
-            editId: '',
             model: {
                 id: '',
                 name: ''
@@ -60,7 +59,7 @@ export default {
         handleEdit(row) {
             this.isAdd = false
             this.dialogFormVisible = true
-            this.editId = row.id
+            this.model = row
         },
         handleDelete(row) {
             this.$http.delete(`inst/type/delete/${row.id}`).then(res => {
@@ -70,6 +69,7 @@ export default {
         },
         handleAdd() {
             this.isAdd = true
+            this.model = this.$options.data().model
             this.dialogFormVisible = true
         },
         submit() {
@@ -80,8 +80,7 @@ export default {
                     this.reload()
                 })
             } else {
-                this.model.id = this.editId
-                this.$http.post('inst/type/update', model).then(res => {
+                this.$http.post('inst/type/update', this.model).then(res => {
                     console.log('刷新');
                     this.reload()
                 })
