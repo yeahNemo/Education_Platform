@@ -9,7 +9,7 @@
                     </mu-avatar>
                 </div>
                 <div class="user-name">
-                    NEMO
+                    {{ userInfo.username }}
                 </div>
             </mu-row>
             <div>
@@ -49,7 +49,7 @@
 
 <script>
 import { successMsg } from '@/utils/message'
-
+import { mapState } from 'vuex'
 export default {
     data() {
         return {
@@ -63,6 +63,9 @@ export default {
             successMsg('已退出')
         }
     },
+    computed: {
+        ...mapState(['userInfo'])
+    }
 
 }
 </script>
