@@ -2,7 +2,7 @@
     <div>
         <!-- <h3>机构列表</h3> -->
         <div class="ins-list">
-            <mu-paper v-for="inst in instList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst.id)">
+            <mu-paper v-for="inst in instList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
                         <!-- <avatar :instId="inst.id"></avatar> -->
@@ -31,8 +31,8 @@ export default {
         }
     },
     methods: {
-        routeTo(instId) {
-            this.$router.push(`/inst-course/${instId}`)
+        routeTo(inst) {
+            this.$router.push(`/inst-course/${inst.id}`)
         }
     },
     async mounted() {

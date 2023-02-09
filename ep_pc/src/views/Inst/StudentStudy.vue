@@ -67,14 +67,14 @@ export default {
             chartData: {
                 columns: ['key', 'value'],
                 rows: [
-                    {
-                        key: '已完成',
-                        value: 2
-                    },
-                    {
-                        key: '未完成',
-                        value: 3
-                    },
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
                 ]
             },
             stuList: [],

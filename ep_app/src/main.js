@@ -18,7 +18,11 @@ import 'muse-ui-loading/dist/muse-ui-loading.css' // load css
 import Loading from 'muse-ui-loading'
 // 引入 axios 并进行挂载
 import http from '@/utils/http'
+// 引入V-charts
+import VCharts from 'v-charts'
+
 import VideoPlayer from 'vue-video-player'
+Vue.use(VCharts)
 require('vue-video-player/src/custom-theme.css')
 require('video.js/dist/video-js.css')
 Vue.use(VideoPlayer)

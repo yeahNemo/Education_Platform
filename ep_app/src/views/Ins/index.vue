@@ -74,8 +74,8 @@ export default {
         let res = await this.$http.get(`/inst/${this.id}`)
         // console.log('res', res);
         this.instObj = res.data.data
-        res = await this.$http.get(`/file/list/${this.id}`)
-        console.log('res', res)
+        res = await this.$http.get(`/file/inst-share-docs/${this.id}`)
+        // console.log('res', res)
         this.instResourceList = res.data.data
         this.handleIsJoined()
     },
@@ -91,14 +91,14 @@ export default {
         async handleIsJoined() {
             const res = await this.$http.get(`/inst/stuInstList/${this.userInfo.id}`)
             const inst = res.data.data.find(item => item.id === Number(this.id))
-            console.log('inst', inst);
+            // console.log('inst', inst);
 
             if (inst === undefined) {
                 this.isJoined = false
-                console.log('未加入');
+                // console.log('未加入');
             } else {
                 this.isJoined = true
-                console.log('已加入');
+                // console.log('已加入');
             }
         },
         openFile(storeName) {

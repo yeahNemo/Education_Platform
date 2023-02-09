@@ -4,6 +4,20 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
+const instAuditorRoutes = [
+  {
+    path: "asset-check",
+    component: () => import("@/views/InstRole/InstAuditor.vue"),
+  },
+];
+
+const instPublisherRoutes = [
+  {
+    path: "asset-release",
+    component: () => import("@/views/InstRole/InstPublisher.vue"),
+  },
+];
+
 const instRoutes = [
   {
     path: "stu-study",
@@ -44,6 +58,10 @@ const instRoutes = [
 ];
 
 const adminRoutes = [
+  {
+    path: "inst-role-apply",
+    component: () => import("@/views/Admin/InstRoleApply.vue"),
+  },
   {
     path: "shared-ques-bank",
     component: () => import("@/views/Admin/SharedQuestionBank.vue"),
@@ -109,7 +127,12 @@ const routes = [
   {
     path: "/main",
     component: () => import("@/views/Main.vue"),
-    children: [...adminRoutes, ...instRoutes],
+    children: [
+      ...adminRoutes,
+      ...instRoutes,
+      ...instAuditorRoutes,
+      ...instPublisherRoutes,
+    ],
   },
   {
     name: "404",

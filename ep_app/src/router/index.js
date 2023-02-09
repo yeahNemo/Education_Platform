@@ -27,6 +27,10 @@ const routes = [
     ]
   },
   {
+    path: '/stu-study',
+    component: () => import('../views/Ins/StudentStudy.vue')
+  },
+  {
     path: '/user-message-box',
     component: () => import('../views/User/MessageBox.vue')
   },

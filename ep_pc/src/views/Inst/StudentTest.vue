@@ -62,7 +62,9 @@
         </div>
         <div>
             <el-dialog title="考试情况" :visible.sync="detailDialogVisible">
-                <ve-ring :data="chartData" :settings="chartSettings"></ve-ring>
+                <ve-ring :data="chartData1" :settings="chartSettings"></ve-ring>
+                <ve-ring :data="chartData2" :settings="chartSettings"></ve-ring>
+                <ve-ring :data="chartData3" :settings="chartSettings"></ve-ring>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="detailDialogVisible = false">确定</el-button>
                 </div>
@@ -86,17 +88,43 @@ export default {
     data() {
         return {
             chartSettings: { type: 'pie' },
-            chartData: {
+            chartData1: {
                 columns: ['key', 'value'],
                 rows: [
-                    {
-                        key: '已完成',
-                        value: 2
-                    },
-                    {
-                        key: '未完成',
-                        value: 3
-                    },
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
+                ]
+            },
+            chartData2: {
+                columns: ['key', 'value'],
+                rows: [
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
+                ]
+            },
+            chartData3: {
+                columns: ['key', 'value'],
+                rows: [
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
                 ]
             },
             stuList: [],
@@ -126,12 +154,16 @@ export default {
         async checkTest(row) {
             this.selectedTestId = row.id
             this.detailDialogVisible = true
-            console.log('当前选择学生：', this.selectedStuId);
-            console.log('当前选择培训：', this.selectedPlanId);
-            console.log('当前选择考试：', this.selectedTestId);
-
+            // console.log('当前选择学生：', this.selectedStuId);
+            // console.log('当前选择培训：', this.selectedPlanId);
+            // console.log('当前选择考试：', this.selectedTestId);
             // 填充数据 
-            this.chartData.rows = [{ key: '已完成', value: 1 }, { key: '未完成', value: 3 }]
+            const res = await this.$http.get(`/exam/statistic/${this.selectedStuId}/${this.selectedTestId}`)
+            // this.chartData.rows = [{ key: '已完成', value: 1 }, { key: '未完成', value: 3 }]
+            let rawData = res.data.data
+            this.chartData1.rows = [rawData[0], rawData[1]]
+            this.chartData2.rows = [rawData[2], rawData[3]]
+            this.chartData3.rows = [rawData[4], rawData[5]]
 
             console.clear()
             this.$nextTick(() => {

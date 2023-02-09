@@ -12,7 +12,7 @@
             </mu-appbar>
         </div>
         <div class="plan-list">
-            <mu-paper v-for="plan in planList" :key="plan.id" class="plan-card" :z-depth="3" @click="routeTo(plan.id)">
+            <mu-paper v-for="plan in planList" :key="plan.id" class="plan-card" :z-depth="3" @click="routeTo(plan)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
                         <!-- <avatar :instId="inst.id"></avatar> -->
@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { errorMsg } from '@/utils/message'
+import dayjs from 'dayjs'
 export default {
     props: ['instId'],
     async mounted() {
@@ -45,8 +47,17 @@ export default {
         }
     },
     methods: {
-        routeTo(planId) {
-            this.$router.push(`/plan-task/${planId}`)
+        routeTo(plan) {
+            console.log(plan);
+            const nowDate = dayjs()
+            if (nowDate.isBefore(plan.startDate)) {
+                errorMsg('培训暂未开始')
+                return
+            } else if (nowDate.isAfter(plan.endDate)) {
+                errorMsg('培训已结束！')
+                return
+            }
+            this.$router.push(`/plan-task/${plan.id}`)
         }
     },
 }

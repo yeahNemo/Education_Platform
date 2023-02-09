@@ -25,6 +25,11 @@
                         <div>{{ `得分：${item.stuScore}` }}</div>
                     </mu-paper>
                 </div>
+                <div class="chart">
+                    <ve-ring :data="chartData1" :settings="chartSettings"></ve-ring>
+                    <ve-ring :data="chartData2" :settings="chartSettings"></ve-ring>
+                    <ve-ring :data="chartData3" :settings="chartSettings"></ve-ring>
+                </div>
             </div>
         </div>
     </div>
@@ -33,17 +38,65 @@
 <script>
 export default {
     async mounted() {
-        const res = await this.$http.get(`/exam/exam-result/${this.$route.query.adminId}/${this.$route.query.examId}`)
+        console.clear()
+        let res = await this.$http.get(`/exam/exam-result/${this.$route.query.adminId}/${this.$route.query.examId}`)
         if (res.data.code === 400) {
             this.showForbidden = true
         } else {
             this.quesDetailList = res.data.data
+            // 填充饼图数据 
+            res = await this.$http.get(`/exam/statistic/${this.$route.query.adminId}/${this.$route.query.examId}`)
+            // this.chartData.rows = [{ key: '已完成', value: 1 }, { key: '未完成', value: 3 }]
+            let rawData = res.data.data
+            this.chartData1.rows = [rawData[0], rawData[1]]
+            this.chartData2.rows = [rawData[2], rawData[3]]
+            this.chartData3.rows = [rawData[4], rawData[5]]
         }
     },
     data() {
         return {
             showForbidden: false,
-            quesDetailList: []
+            quesDetailList: [],
+            chartSettings: { type: 'pie' },
+            chartData1: {
+                columns: ['key', 'value'],
+                rows: [
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
+                ]
+            },
+            chartData2: {
+                columns: ['key', 'value'],
+                rows: [
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
+                ]
+            },
+            chartData3: {
+                columns: ['key', 'value'],
+                rows: [
+                    // {
+                    //     key: '已完成',
+                    //     value: 2
+                    // },
+                    // {
+                    //     key: '未完成',
+                    //     value: 3
+                    // },
+                ]
+            },
         }
     },
 }

@@ -7,9 +7,9 @@
                         <h1 style="color:azure">交运通后台管理系统</h1>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" style="position:relative; left:0; top: 0;"
+                        <el-button ref="applyBtn" type="success" style="position:relative; left:0; top: 0;"
                             @click="dialogFormVisible = true"
-                            :disabled="userRole.id !== 0">{{ userRole.id === 0 ? '激活' : '已激活' }}</el-button>
+                            :disabled="userRole.id !== 0 || applyBtnDisabled">{{ userRole.id === 0 ? '激活' : '已激活' }}</el-button>
                     </el-col>
                     <el-col :span="2">
                         <el-button type="danger" style="position:relative; left:5rem; top: 0;"
@@ -118,15 +118,15 @@
                     </div>
                 </el-tab-pane>
                 <el-tab-pane label="机构配角">
-                    <el-form ref="instRoleForm" :model="roleModel" :rules="rules">
+                    <el-form :model="roleModel" :rules="rules">
                         <div style="padding-right:3rem">
-                            <el-form-item label="所属机构" prop="instName" :label-width="formLabelWidth">
+                            <el-form-item label="所属机构" prop="instId" :label-width="formLabelWidth">
                                 <el-select v-model="roleModel.instId" placeholder="选择所属机构">
                                     <el-option v-for="item in instList" :key="item.id" :label="item.instName"
                                         :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="角色类型" prop="typeId" :label-width="formLabelWidth">
+                            <el-form-item label="角色类型" prop="roleId" :label-width="formLabelWidth">
                                 <el-select v-model="roleModel.roleId" placeholder="选择角色">
                                     <el-option label="审核员" :value="3"></el-option>
                                     <el-option label="发布员" :value="4"></el-option>
@@ -189,7 +189,8 @@ export default {
                 instId: ''
             },
             dialogFormVisible: false,
-            formLabelWidth: '5rem'
+            formLabelWidth: '5rem',
+            applyBtnDisabled: false
         }
     },
     computed: {
@@ -205,7 +206,10 @@ export default {
         },
         async submitRole() {
             this.roleModel.adminId = this.userInfo.id
-            //TODO admin-role-relation 表添加一条记录
+            const res = await this.$http.post(`/role/apply/${this.roleModel.adminId}/${this.roleModel.instId}/${this.roleModel.roleId}`)
+            this.applyBtnDisabled = true
+            this.dialogFormVisible = false
+            successMsg('已递交申请')
 
         },
         getParentRightList() {
@@ -218,6 +222,7 @@ export default {
                     await this.$http.post('inst/register', this.model).then(res => {
                         console.log(res);
                         successMsg('已提交')
+                        this.applyBtnDisabled = true
                         this.dialogFormVisible = false
                     })
                 } else {

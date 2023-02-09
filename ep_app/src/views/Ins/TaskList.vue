@@ -9,6 +9,8 @@
                             fill="#ffffff" p-id="1166"></path>
                     </svg>
                 </mu-button>
+                <mu-button flat slot="right"
+                    @click="$router.push({ path: '/stu-study', query: { planId } })">学习情况</mu-button>
             </mu-appbar>
             <mu-tabs :value.sync="tabActive" inverse color="lightBlue800" text-color="rgba(0, 0, 0, .54)" full-width
                 indicator-color="lightBlue800" class="nemo-tab">
@@ -64,28 +66,29 @@ export default {
         getTestState(test) {
             const nowTime = new Date()
             const endTime = new Date(test.endTime)
-            if (nowTime > endTime) {
-                return '<div class="nemo-status-point" style=" background-color:#F56C6C" />'
+            if (test.submitted === 1) {
+                return '<div class="nemo-status-point" style=" background-color:#67C23A" />'
             } else {
-                return test.submitted === 1 ? '<div class="nemo-status-point" style=" background-color:#67C23A" />' : '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
+                return nowTime > endTime ? '<div class="nemo-status-point" style=" background-color:#F56C6C" />' : '<div class="nemo-status-point" style=" background-color:#E4E7ED" />'
             }
         },
         async startTest(test) {
             const nowTime = new Date()
             const endTime = new Date(test.endTime)
-            if (nowTime > endTime) {
-                errorMsg('考试已逾期')
-                return
-            }
-            if (test.submitted === 0) {
-                Message.confirm('确定开始？考试不允许暂停！').then((async ({ result }) => {
-                    if (result) {
-                        const res = await this.$http.post('/exam/exam-log', { adminId: this.userInfo.id, examId: test.id })
-                        this.$router.push({ path: `/test/${test.id}`, query: { planId: this.planId } })
-                    }
-                }))
-            } else if (test.submitted === 1) {
+            if (test.submitted === 1) {
                 this.$router.push({ path: '/test-result', query: { adminId: this.userInfo.id, examId: test.id } })
+            } else {
+                if (nowTime > endTime) {
+                    errorMsg('考试已逾期')
+                    return
+                } else {
+                    Message.confirm('确定开始？考试不允许暂停！').then((async ({ result }) => {
+                        if (result) {
+                            const res = await this.$http.post('/exam/exam-log', { adminId: this.userInfo.id, examId: test.id })
+                            this.$router.push({ path: `/test/${test.id}`, query: { planId: this.planId } })
+                        }
+                    }))
+                }
             }
         },
         async isTaskFinished(taskId) {
@@ -100,11 +103,11 @@ export default {
                         'videoProcess': '0',
                         'finished': 0
                     })
-                textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
+                textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E4E7ED" />'
                 return false
             } else {
                 if (res.data.data.finished === 0) {
-                    textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E6A23C" />'
+                    textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#E4E7ED" />'
                     return false
                 } else {
                     textDom.innerHTML = '<div class="nemo-status-point" style=" background-color:#67C23A" />'
