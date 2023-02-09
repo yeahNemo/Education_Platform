@@ -22,7 +22,7 @@ export default {
     props: ['instId'],
     created() {
         this.$http.get(`/inst/applyList/${this.instId}`).then(res => {
-            console.log('applyList', res.data);
+            // console.log('applyList', res.data);
             this.tableData = res.data.data
         })
     },

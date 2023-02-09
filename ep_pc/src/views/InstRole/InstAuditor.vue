@@ -8,9 +8,13 @@
                 </el-table-column>
                 <el-table-column prop="description" label="介绍" width="180">
                 </el-table-column>
-                <el-table-column label="是否通过">
+                <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button type="text" @click="handleCheck(scope.row)">查看</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column label="是否通过">
+                    <template slot-scope="scope">
                         <el-switch @change="handleIsShow(arguments[0], scope.row)" :active-value="1" :inactive-value="0"
                             v-model="scope.row.passed" active-color="#13ce66">
                         </el-switch>
@@ -40,9 +44,8 @@ export default {
             successMsg('修改成功')
         },
         handleCheck(row) {
-            //TODO 打开文件
             window.open(`http://localhost:8081/file/get/${row.storeName}`)
-            console.log('CheckFile')
+            // console.log('CheckFile')
         }
     },
     computed: {

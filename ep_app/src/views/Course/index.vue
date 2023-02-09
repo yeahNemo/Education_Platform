@@ -1,18 +1,17 @@
 <template>
     <div>
-        <!-- <h3>机构列表</h3> -->
-        <div class="ins-list">
-            <mu-paper v-for="inst in instList" :key="inst.id" class="ins-card" :z-depth="3" @click="routeTo(inst)">
+        <div class="inst-list">
+            <mu-paper v-for="inst in instList" :key="inst.id" class="inst-card" :z-depth="3" @click="routeTo(inst)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
-                        <!-- <avatar :instId="inst.id"></avatar> -->
+                        <img class="avatar" :src="`http://localhost:8081/inst/icon/${inst.id}`" :onerror="defaultImg">
                     </div>
                     <div>
-                        <div class="ins-name">
+                        <div class=" inst-name">
                             {{ inst.instName }}
                         </div>
-                        <div class="ins-description">
-                            {{ typeList[inst.typeId].name }}
+                        <div class="inst-description">
+                            {{ typeList[inst.typeId]? typeList[inst.typeId].name : '' }}
                         </div>
                     </div>
                 </div>
@@ -27,7 +26,8 @@ export default {
     data() {
         return {
             typeList: [],
-            instList: []
+            instList: [],
+            defaultImg: 'this.src="' + require('../../assets/Ins/inst-default-avatar.png') + '"' //默认图地址
         }
     },
     methods: {
@@ -49,17 +49,26 @@ export default {
 </script>
 
 <style socped>
-.ins-name {
+.avatar {
+    overflow: hidden;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 5px;
+    margin-top: 0.3rem;
+}
+
+.inst-name {
+    padding-top: 0.4rem;
     font-size: 1rem;
 }
 
-.ins-list {
+.inst-list {
     /* background-color: white; */
     flex-grow: 1;
     margin-bottom: 3.5rem;
 }
 
-.ins-card {
+.inst-card {
     font-size: 12px;
     border-radius: 0.5rem;
     padding: 0.5rem 0.5rem;

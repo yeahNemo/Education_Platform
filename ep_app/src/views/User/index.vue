@@ -2,10 +2,10 @@
     <div class="main-container">
         <div class="main">
             <mu-row class="avatar-name">
-                <div class="avatar">
+                <div class="nemo-avatar">
                     <mu-avatar size="54" color="indigo">
                         <!-- <mu-icon size="40" value="account_circle"></mu-icon> -->
-                        <img :src="require('D:\\education_platform\\inst.png')" alt="头像">
+                        <img ref="avatar" :src="`http://localhost:8081/ums/icon/${this.userInfo.id}`" alt="头像">
                     </mu-avatar>
                 </div>
                 <div class="user-name">
@@ -50,11 +50,6 @@
 import { successMsg } from '@/utils/message'
 import { mapState } from 'vuex'
 export default {
-    data() {
-        return {
-
-        }
-    },
     methods: {
         exit() {
             sessionStorage.clear()
@@ -71,7 +66,7 @@ export default {
 </script>
 
 <style scoped>
-.avatar {
+.nemo-avatar {
     margin-right: 1rem;
 }
 

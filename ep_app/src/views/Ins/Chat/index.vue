@@ -27,14 +27,11 @@
                     <span style="color:blue">
                         {{ chat.username }}
                     </span>
-                    <span>提问：</span>
+                    <span>提问：{{ chat.question }}</span>
                 </div>
-                <div class="content" style="font-size: .75rem">
-                    <div class="question-name">
-                        Q:&nbsp;{{ chat.question }}
-                    </div>
-                    <div class="chat-description">
-                        A:&nbsp;{{ chat.answer }}
+                <div class="content" style="font-size: 0.85rem">
+                    <div class="chat-answer">
+                        回答:&nbsp;{{ chat.answer }}
                     </div>
                 </div>
                 <div class="time">
