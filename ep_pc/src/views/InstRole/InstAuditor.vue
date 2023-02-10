@@ -44,7 +44,7 @@ export default {
             successMsg('修改成功')
         },
         handleCheck(row) {
-            window.open(`http://localhost:8081/file/get/${row.storeName}`)
+            window.open(`http://120.79.171.132:8081/file/get/${row.storeName}`)
             // console.log('CheckFile')
         }
     },

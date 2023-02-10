@@ -159,7 +159,7 @@ export default {
             this.menuList = res.data.data
         })
         // 获取机构列表
-        this.$http.get('http://localhost:8081/inst/all?keyword=&pageSize=&pageNum=').then(res => {
+        this.$http.get('inst/all?keyword=&pageSize=&pageNum=').then(res => {
             this.instList = res.data.data.list
         })
     },

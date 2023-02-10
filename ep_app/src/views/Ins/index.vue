@@ -22,7 +22,8 @@
                 <div style="display: flex;">
                     <mu-card-header :title="instObj.instName" sub-title="交运通认证">
                         <mu-avatar :size="50" slot="avatar">
-                            <img class="avatar" :src="`http://localhost:8081/inst/icon/${id}`" :onerror="defaultImg">
+                            <img class="avatar" :src="`http://120.79.171.132:8081/inst/icon/${id}`"
+                                :onerror="defaultImg">
                         </mu-avatar>
                     </mu-card-header>
                     <div style="margin: 1rem 0.5rem 0 0">

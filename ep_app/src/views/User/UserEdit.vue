@@ -16,7 +16,7 @@
                 <mu-list-item-title>头像</mu-list-item-title>
                 <mu-list-item-action>
                     <mu-avatar>
-                        <img :src="`http://localhost:8081/ums/icon/${this.userInfo.id}`" ref="avatar">
+                        <img :src="`http://120.79.171.132:8081/ums/icon/${this.userInfo.id}`" ref="avatar">
                     </mu-avatar>
                 </mu-list-item-action>
             </mu-list-item>
@@ -92,7 +92,7 @@ export default {
     components: { UpdatePhoto },
     async mounted() {
         // const res = await this.$http.get(`/ums/icon/${this.userInfo.id}`)
-        // this.$refs.avatar.src = 'http://localhost:8081/ums/icon/3'
+        // this.$refs.avatar.src = 'http://120.79.171.132:8081/ums/icon/3'
     },
     data() {
         return {

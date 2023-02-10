@@ -51,9 +51,9 @@ export default {
                 fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                 sources: [{
                     type: "video/mp4",
-                    // src: `http://localhost:8081/file/get/${this.storeName}` //你的视频地址（必填）
+                    // src: `http://120.79.171.132:/file/get/${this.storeName}` //你的视频地址（必填）
                     // 下面后端说可以自动分段
-                    src: `http://localhost:8081/file/video/${this.storeName}` //你的视频地址（必填）
+                    src: `http://120.79.171.132:8081/file/video/${this.storeName}` //你的视频地址（必填）
                 }],
                 poster: "", //你的封面地址
                 width: document.documentElement.clientWidth,

@@ -10,7 +10,7 @@
                     <el-input v-model="model.description"></el-input>
                 </el-form-item>
                 <el-form-item label="上传">
-                    <el-upload class="upload-demo" action="http://localhost:8081/file/uploadFile"
+                    <el-upload class="upload-demo" action="http://120.79.171.132:8081/file/uploadFile"
                         :on-preview="handlePreview" :on-remove="handleRemove" :before-remove="beforeRemove" multiple
                         :limit="1" :on-exceed="handleExceed" :file-list="fileList" accept="doc,pdf,mp4"
                         :on-success="handleSuccess">

@@ -2,7 +2,7 @@ import axios from "axios";
 import { successMsg, errorMsg } from "@/utils/message";
 
 const service = axios.create({
-  // baseURL: "http://localhost:8081",
+  // baseURL: "http://120.79.171.132",
   baseURL: "http://120.79.171.132:8081",
 });
 

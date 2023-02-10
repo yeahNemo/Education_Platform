@@ -58,7 +58,7 @@ export default {
     },
     methods: {
         handleExport() {
-            window.open(`http://localhost:8081/inst/export-excel/${this.userInfo.instId}`)
+            window.open(`http://120.79.171.132:8081/inst/export-excel/${this.userInfo.instId}`)
         },
         async handleDel(row) {
             const res = await this.$http.post(`/inst/delete-stu/${this.userInfo.instId}/${row.id}`)

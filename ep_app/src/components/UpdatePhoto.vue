@@ -44,7 +44,7 @@ export default {
                 // 调用后端API上传文件，返回src赋予后展示头像
                 let formData = new FormData()
                 formData.append('file', blob, this.fileName)
-                postFormData(`http://localhost:8081/ums/upload/icon/${this.userInfo.id}`, formData).then(
+                postFormData(`http://120.79.171.132:8081/ums/upload/icon/${this.userInfo.id}`, formData).then(
                     res => {
                         console.log('postFormData', res);
                         successMsg(res.data.message)

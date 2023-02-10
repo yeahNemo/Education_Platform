@@ -4,9 +4,10 @@
 
         <el-form label-width="100px" @submit.native.prevent="save">
             <el-form-item label="机构头像">
-                <el-upload class="avatar-uploader" :action="`http://localhost:8081/inst/upload/icon/${this.instId}`"
-                    :show-file-list="false" :on-success="afterUpload">
-                    <img :src="`http://localhost:8081/inst/icon/${this.instId}`" class="avatar">
+                <el-upload class="avatar-uploader"
+                    :action="`http://120.79.171.132:8081/inst/upload/icon/${this.instId}`" :show-file-list="false"
+                    :on-success="afterUpload">
+                    <img :src="`http://120.79.171.132:8081/inst/icon/${this.instId}`" class="avatar">
                     <!-- <i class="el-icon-plus avatar-uploader-icon"></i> -->
                 </el-upload>
             </el-form-item>

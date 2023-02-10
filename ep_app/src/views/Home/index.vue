@@ -9,7 +9,8 @@
             <mu-paper v-for="inst in insList" :key="inst.id" class="inst-card" :z-depth="3" @click="routeTo(inst.id)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
-                        <img class="avatar" :src="`http://localhost:8081/inst/icon/${inst.id}`" :onerror="defaultImg">
+                        <img class="avatar" :src="`http://120.79.171.132:8081/inst/icon/${inst.id}`"
+                            :onerror="defaultImg">
                     </div>
                     <div>
                         <div class=" inst-name">

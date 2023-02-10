@@ -5,7 +5,7 @@
                 <div class="nemo-avatar">
                     <mu-avatar size="54" color="indigo">
                         <!-- <mu-icon size="40" value="account_circle"></mu-icon> -->
-                        <img ref="avatar" :src="`http://localhost:8081/ums/icon/${this.userInfo.id}`" alt="头像">
+                        <img ref="avatar" :src="`http://120.79.171.132:8081/ums/icon/${this.userInfo.id}`" alt="头像">
                     </mu-avatar>
                 </div>
                 <div class="user-name">

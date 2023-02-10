@@ -82,12 +82,9 @@ export default {
             // 顶部显示发送成功
             // 发送的api
             const res = await this.$http.get(`mail/send/${this.model.email}`).then(res => {
-                if (res.data.data.code == 200) {
+                if (res.data.code == 200) {
                     this.$toast.success('已发送');
                 }
-            }).catch(e => {
-                console.log(e);
-                this.$toast.error('失败');
             })
             if (res === undefined) {
                 return
