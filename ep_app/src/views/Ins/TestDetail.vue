@@ -37,6 +37,7 @@
 
 <script>
 export default {
+    name: 'TestDetail',
     async mounted() {
         console.clear()
         let res = await this.$http.get(`/exam/exam-result/${this.$route.query.adminId}/${this.$route.query.examId}`)

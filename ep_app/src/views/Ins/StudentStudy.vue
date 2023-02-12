@@ -20,6 +20,7 @@
 <script>
 import { mapState } from 'vuex'
 export default {
+    name: 'StudentStudy',
     async mounted() {
         console.clear()
         let res = await this.$http.get(`/taskProcess/getPlanProcess/${this.userInfo.id}/${this.$route.query.planId}`)

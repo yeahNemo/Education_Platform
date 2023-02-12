@@ -60,6 +60,7 @@
 import { mapState } from 'vuex'
 import { successMsg } from '@/utils/message'
 export default {
+    name: 'Chat',
     created() {
         this.$http.get(`/question/list/${this.id}?answered=1`).then(res => {
             // console.log(res.data.data);

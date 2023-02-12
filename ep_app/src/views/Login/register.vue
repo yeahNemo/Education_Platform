@@ -39,6 +39,8 @@
     </div>
 </template>
 <script>
+import { successMsg } from '@/utils/message';
+
 export default {
     data() {
         return {
@@ -92,7 +94,6 @@ export default {
 
             this.disabled = true
             this.counter = 59
-            // TODO 倒计时再次发送
             this.timer = setInterval(() => {
                 // 替换文本，用es6里面的``这个来创建字符串模板，让秒实时改变
                 this.sendBtnText = `${this.counter}秒后重新发送`
@@ -112,13 +113,27 @@ export default {
         },
         submit() {
             this.$refs.form.validate().then((result) => {
-
                 if (result) {
                     this.$http.post('ums/register', this.model).then(res => {
                         console.log(res);
+                        successMsg('注册成功！')
+                        this.$router.push('/login')
                     }).catch(e => {
                         console.log(e);
                     })
+                } else {
+                    return
+                }
+
+            });
+        },
+        submit() {
+            this.$refs.form.validate().then(async (result) => {
+                if (result) {
+                    const res = await this.$http.post('ums/register', this.model)
+                    successMsg('注册成功！')
+                    this.$router.push('/login')
+
                 } else {
                     return
                 }

@@ -34,6 +34,7 @@ import Message from 'muse-ui-message'
 import { mapState } from 'vuex'
 import dayjs from 'dayjs'
 export default {
+    name: 'Test',
     props: ['testId'],
     async mounted() {
         let res = await this.$http.get(`/exam/getById/${this.testId}`)

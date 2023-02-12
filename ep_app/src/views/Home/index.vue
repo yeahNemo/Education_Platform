@@ -5,7 +5,7 @@
             <mu-tab>资料</mu-tab>
             <mu-tab>机构</mu-tab>
         </mu-tabs>
-        <div v-if="active == 1" class="inst-list">
+        <div v-show="active == 1" class="inst-list">
             <mu-paper v-for="inst in insList" :key="inst.id" class="inst-card" :z-depth="3" @click="routeTo(inst.id)">
                 <div style="display: flex; flex-direction: row;">
                     <div style="margin-right: 0.5rem; overflow: hidden;">
@@ -23,7 +23,7 @@
                 </div>
             </mu-paper>
         </div>
-        <div v-else>
+        <div v-show="active == 0">
             <mu-paper v-for="item in publicResourceList" :key="item.id" class="inst-card" :z-depth="3"
                 @click="openFile(item.storeName)">
                 <div style="display: flex; flex-direction: row;">

@@ -68,7 +68,6 @@
                         </el-table-column>
                         <el-table-column label="操作">
                             <template slot-scope="scope">
-                                <el-button type="text" @click="taskHandleEdit(scope.row)">编辑</el-button>
                                 <el-button type="text" @click="taskHandleDel(scope.row)">删除</el-button>
                             </template>
                         </el-table-column>
@@ -107,7 +106,7 @@
                         <el-input v-model="taskToAdd.content" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="关联文件" prop="filename" label-width="120">
-                        <el-select v-model="taskToAdd.filename" placeholder="选择关联文件">option
+                        <el-select v-model="taskToAdd.filename" placeholder="选择关联文件">
                             <el-option v-for="item in instResourceList" :key="item.id" :label="item.filename"
                                 :value="item.storeName"></el-option>
                         </el-select>

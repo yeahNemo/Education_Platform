@@ -32,6 +32,7 @@
 <script>
 import { mapState } from 'vuex';
 export default {
+    name: 'MessageBox',
     async mounted() {
         // const res = await this.$http.get(`/inst/message-box/${this.userInfo.id}`)
         // this.msgList = res.data.data

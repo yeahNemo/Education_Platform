@@ -22,8 +22,7 @@
     </div>
     <div>
       <el-dialog title="题库配置" :visible.sync="configDialogVisible">
-        <el-button size="small" type="primary"
-          @click="quesFormDialogVisible = true; isEdit = false; quesToAdd = $options.data().quesToAdd">创建</el-button>
+        <el-button size="small" type="primary" @click="handleAddBtn">创建</el-button>
         <el-table :data="quesTableData" stripe style="width: 100%">
           <el-table-column prop="content" label="题目" width="180">
           </el-table-column>
@@ -97,10 +96,15 @@ export default {
         content: '',
         answer: ''
       },
-      isEdit: false
+      isEdit: false,
+      selectedPlanId: ''
     }
   },
   methods: {
+    handleAddBtn() {
+      this.quesFormDialogVisible = true
+      this.isEdit = false
+    },
     async editQues(row) {
       this.isEdit = true
       this.quesFormDialogVisible = true
@@ -116,7 +120,7 @@ export default {
     async handleConfig(row) {
       const res = await this.$http.get(`/problem/plan-problem-list/${row.id}?keyword=`)
       this.quesTableData = res.data.data
-      this.quesToAdd.planId = row.id
+      this.selectedPlanId = row.id
       this.configDialogVisible = true
     },
     async submitNewQues() {
@@ -132,6 +136,7 @@ export default {
         temp.planId = res.data.data.planId
         this.quesFormDialogVisible = false
       } else {
+        this.quesToAdd.planId = this.selectedPlanId
         const res = await this.$http.post('/problem/add', this.quesToAdd)
         successMsg(this.isEdit ? '编辑成功' : '添加成功')
         this.quesTableData.push(res.data.data)

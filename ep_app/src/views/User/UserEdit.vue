@@ -105,7 +105,7 @@ export default {
             newUserName: '',
             newNickName: '',
             userNameDialogVisible: false,
-            nickNameDialogVisible: false
+            nickNameDialogVisible: false,
         }
     },
     methods: {
@@ -120,9 +120,6 @@ export default {
         },
         closeBottomSheet() {
             this.showBottomSheet = false;
-        },
-        editAvatar() {
-
         },
         async changeUserName() {
             const res = await this.$http.post(`/ums/update/info/${this.userInfo.id}`, {

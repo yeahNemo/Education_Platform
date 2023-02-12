@@ -2,7 +2,7 @@ import axios from 'axios'
 import Toast from 'muse-ui-toast'
 
 const service = axios.create({
-  // baseURL: 'http://120.79.171.132'
+  // baseURL: 'http://localhost:8081'
   baseURL: 'http://120.79.171.132:8081'
 })
 

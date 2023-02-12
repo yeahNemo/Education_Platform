@@ -17,7 +17,7 @@
             <mu-tab>机构介绍</mu-tab>
             <mu-tab>公开资料</mu-tab>
         </mu-tabs>
-        <div class="inst-info" v-if="tabValue === 0">
+        <div class="inst-info" v-show="tabValue === 0">
             <mu-card style="display: flex; flex-direction: column; width: 100%; min-height: inherit">
                 <div style="display: flex;">
                     <mu-card-header :title="instObj.instName" sub-title="交运通认证">
@@ -44,7 +44,7 @@
                 </mu-card-actions>
             </mu-card>
         </div>
-        <div class="inst-resource" v-else>
+        <div class="inst-resource" v-show="tabValue === 1">
             <mu-paper v-for="item in instResourceList" :key="item.id" class="inst-card" :z-depth="3"
                 @click="openFile(item.storeName)">
                 <div style="display: flex; flex-direction: row;">
@@ -117,16 +117,9 @@ export default {
             }
         },
         async handleIsJoined() {
-            const res = await this.$http.get(`/inst/stuInstList/${this.userInfo.id}`)
-            const inst = res.data.data.find(item => item.id === Number(this.id))
-            // console.log('inst', inst);
-            if (inst === undefined) {
-                this.isJoined = false
-                // console.log('未加入');
-            } else {
-                this.isJoined = true
-                // console.log('已加入');
-            }
+            const res = await this.$http.get(`/inst/stu-apply-state/${this.userInfo.id}/${this.id}`)
+            // console.log('isJoined', res);
+            this.isJoined = res.data.data
         },
         openFile(storeName) {
             console.log(storeName.substr(-3, 3));

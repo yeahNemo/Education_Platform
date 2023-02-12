@@ -3,9 +3,7 @@
     <!-- <keep-alive exclude="instHome">
       <router-view />
     </keep-alive> -->
-    <keep-alive exclude="VideoPlayer,StudentStudy,TaskList,Test,Chat,InstHome,MessageBox,VuePdfPaging">
-      <router-view></router-view>
-    </keep-alive>
+    <router-view v-if="isRouterAlive"></router-view>
   </div>
 </template>
 
@@ -77,11 +75,15 @@ export default {
   data() {
     return {
       msgRecieveTimer: null,
+      isRouterAlive: true,
     };
   },
   methods: {
     reload() {
-      this.$router.go(0)
+      this.isRouterAlive = false;
+      this.$nextTick(function () {
+        this.isRouterAlive = true;
+      })
     }
   },
   computed: {

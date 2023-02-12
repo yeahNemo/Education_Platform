@@ -19,7 +19,7 @@
             </mu-tabs>
         </div>
         <div class="main">
-            <div class="task-list" v-if="tabActive === 0">
+            <div class="task-list" v-show="tabActive === 0">
                 <mu-list>
                     <mu-list-item @click="openFile(item.filename, item.id, item.title, item.content)"
                         v-for="item in taskList" :key="item.id" button :ripple="true">
@@ -28,7 +28,7 @@
                     </mu-list-item>
                 </mu-list>
             </div>
-            <div class="test-list" v-else>
+            <div class="test-list" v-show="tabActive === 1">
                 <mu-list>
                     <mu-list-item @click="startTest(item)" v-for="item in testList" :key="item.id" button
                         :ripple="true">
@@ -46,6 +46,7 @@ import { errorMsg } from '@/utils/message';
 import Message from 'muse-ui-message'
 import { mapState } from 'vuex';
 export default {
+    name: 'TaskList',
     props: ['planId'],
     async mounted() {
         let res = await this.$http.get(`/planTask/getByInstId/${this.planId}`)

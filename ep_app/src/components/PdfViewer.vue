@@ -102,6 +102,7 @@ export default {
             this.loaded = true
         }
     },
+
     destroyed() {
         // this.reload()
         this.$router.go(0)

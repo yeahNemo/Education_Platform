@@ -16,6 +16,7 @@ import { mapState } from 'vuex'
 import { successMsg } from '@/utils/message'
 export default {
     name: 'UpdatePhoto',
+    inject: ['reload'],
     created() {
 
     },
@@ -39,18 +40,15 @@ export default {
     },
     methods: {
         confirm() {
-            this.cropper.getCroppedCanvas().toBlob(blob => {
+            this.cropper.getCroppedCanvas().toBlob(async blob => {
                 console.log(blob);
                 // 调用后端API上传文件，返回src赋予后展示头像
                 let formData = new FormData()
                 formData.append('file', blob, this.fileName)
-                postFormData(`http://120.79.171.132:8081/ums/upload/icon/${this.userInfo.id}`, formData).then(
-                    res => {
-                        console.log('postFormData', res);
-                        successMsg(res.data.message)
-                        this.$emit('closePop')
-                    }
-                )
+                const res = await postFormData(`http://120.79.171.132:8081/ums/upload/icon/${this.userInfo.id}`, formData)
+                successMsg('上传成功')
+                this.$emit('closePop')
+                this.reload()
             })
         }
     },
